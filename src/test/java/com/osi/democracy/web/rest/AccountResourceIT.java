@@ -14,7 +14,6 @@ import com.osi.democracy.security.AuthoritiesConstants;
 import com.osi.democracy.service.UserService;
 import com.osi.democracy.service.dto.AdminUserDTO;
 import com.osi.democracy.service.dto.PasswordChangeDTO;
-import com.osi.democracy.service.dto.UserDTO;
 import com.osi.democracy.web.rest.vm.KeyAndPasswordVM;
 import com.osi.democracy.web.rest.vm.ManagedUserVM;
 import java.time.Instant;

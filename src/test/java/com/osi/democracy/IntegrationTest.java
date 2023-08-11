@@ -1,6 +1,5 @@
 package com.osi.democracy;
 
-import com.osi.democracy.DemocracyApp;
 import com.osi.democracy.config.AsyncSyncConfiguration;
 import com.osi.democracy.config.EmbeddedSQL;
 import java.lang.annotation.ElementType;
