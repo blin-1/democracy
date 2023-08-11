@@ -1,0 +1,48 @@
+entity Candidate       (candidates) {
+   //id             Bigint      required unique
+   firstName      String	  required maxlength(128)
+   lastName       String      required maxlength(128)
+   email          String      required unique
+   pic            ImageBlob   required
+   imageUrl       String      required
+}
+
+entity Address  (addresses) {
+   //id             Bigint      required unique
+   line1          String      required maxlength(128)
+   line2          String      maxlength(128)
+   city           String      required maxlength(64)
+   state          State       required
+   zip            String      required maxlength(6)
+}
+
+entity Issue  (issues) {
+   //id             Bigint      required unique
+   name           String      required unique maxlength(128)
+   description    TextBlob    required 
+}
+
+entity Position  (positions) {
+   //id             Bigint      required unique
+   available      Integer     required
+}
+
+
+relationship OneToOne {
+  Candidate to Address
+}
+
+relationship OneToMany {
+  Candidate to Position
+  Issue to Position
+}
+
+//relationship ManyToMany {
+//  Inventory{id} to Strain{id}
+//}
+
+enum State {
+  AL (Alabama)
+  NJ ("New Jersey")
+  NY ("New York")
+}  
