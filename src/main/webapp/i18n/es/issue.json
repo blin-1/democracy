@@ -1,0 +1,26 @@
+{
+  "democracyApp": {
+    "issue": {
+      "home": {
+        "title": "Issues",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Issue",
+        "createOrEditLabel": "Crear o editar Issue",
+        "notFound": "Ningún Issues encontrado"
+      },
+      "created": "Un nuevo Issue ha sido creado con el identificador {{ param }}",
+      "updated": "Un Issue ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Issue ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Issue {{ id }}?"
+      },
+      "detail": {
+        "title": "Issue"
+      },
+      "id": "ID",
+      "name": "Name",
+      "description": "Description",
+      "position": "Position"
+    }
+  }
+}

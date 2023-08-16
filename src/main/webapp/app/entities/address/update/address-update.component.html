@@ -1,0 +1,116 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-address-heading" data-cy="AddressCreateUpdateHeading" jhiTranslate="democracyApp.address.home.createOrEditLabel">
+        Create or edit a Address
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="democracyApp.address.line1" for="field_line1">Line 1</label>
+          <input type="text" class="form-control" name="line1" id="field_line1" data-cy="line1" formControlName="line1" />
+          <div *ngIf="editForm.get('line1')!.invalid && (editForm.get('line1')!.dirty || editForm.get('line1')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('line1')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('line1')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 128 }"
+            >
+              This field cannot be longer than 128 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="democracyApp.address.line2" for="field_line2">Line 2</label>
+          <input type="text" class="form-control" name="line2" id="field_line2" data-cy="line2" formControlName="line2" />
+          <div *ngIf="editForm.get('line2')!.invalid && (editForm.get('line2')!.dirty || editForm.get('line2')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('line2')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 128 }"
+            >
+              This field cannot be longer than 128 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="democracyApp.address.city" for="field_city">City</label>
+          <input type="text" class="form-control" name="city" id="field_city" data-cy="city" formControlName="city" />
+          <div *ngIf="editForm.get('city')!.invalid && (editForm.get('city')!.dirty || editForm.get('city')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('city')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('city')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 64 }"
+            >
+              This field cannot be longer than 64 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="democracyApp.address.state" for="field_state">State</label>
+          <select class="form-control" name="state" formControlName="state" id="field_state" data-cy="state">
+            <option [ngValue]="null">{{ 'democracyApp.State.null' | translate }}</option>
+            <option *ngFor="let state of stateValues" [value]="state">{{ 'democracyApp.State.' + state | translate }}</option>
+          </select>
+          <div *ngIf="editForm.get('state')!.invalid && (editForm.get('state')!.dirty || editForm.get('state')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('state')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="democracyApp.address.zip" for="field_zip">Zip</label>
+          <input type="text" class="form-control" name="zip" id="field_zip" data-cy="zip" formControlName="zip" />
+          <div *ngIf="editForm.get('zip')!.invalid && (editForm.get('zip')!.dirty || editForm.get('zip')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('zip')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('zip')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 6 }"
+            >
+              This field cannot be longer than 6 characters.
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

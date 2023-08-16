@@ -4,39 +4,39 @@ import java.util.Collections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testcontainers.containers.JdbcDatabaseContainer;
-import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.containers.MariaDBContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 
-public class MysqlTestContainer implements SqlTestContainer {
+public class MariadbTestContainer implements SqlTestContainer {
 
-    private static final Logger log = LoggerFactory.getLogger(MysqlTestContainer.class);
+    private static final Logger log = LoggerFactory.getLogger(MariadbTestContainer.class);
 
-    private MySQLContainer<?> mysqlContainer;
+    private MariaDBContainer<?> mariaDBContainer;
 
     @Override
     public void destroy() {
-        if (null != mysqlContainer && mysqlContainer.isRunning()) {
-            mysqlContainer.stop();
+        if (null != mariaDBContainer && mariaDBContainer.isRunning()) {
+            mariaDBContainer.stop();
         }
     }
 
     @Override
     public void afterPropertiesSet() {
-        if (null == mysqlContainer) {
-            mysqlContainer =
-                new MySQLContainer<>("mysql:8.0.33")
+        if (null == mariaDBContainer) {
+            mariaDBContainer =
+                new MariaDBContainer<>("mariadb:11.0.2")
                     .withDatabaseName("democracy")
                     .withTmpFs(Collections.singletonMap("/testtmpfs", "rw"))
                     .withLogConsumer(new Slf4jLogConsumer(log))
                     .withReuse(true);
         }
-        if (!mysqlContainer.isRunning()) {
-            mysqlContainer.start();
+        if (!mariaDBContainer.isRunning()) {
+            mariaDBContainer.start();
         }
     }
 
     @Override
     public JdbcDatabaseContainer<?> getTestContainer() {
-        return mysqlContainer;
+        return mariaDBContainer;
     }
 }

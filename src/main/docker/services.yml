@@ -1,7 +1,7 @@
 # This configuration is intended for development purpose, it's **your** responsibility to harden it for production
 name: democracy
 services:
-  mysql:
+  mariadb:
     extends:
-      file: ./mysql.yml
-      service: mysql
+      file: ./mariadb.yml
+      service: mariadb

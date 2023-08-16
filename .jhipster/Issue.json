@@ -1,0 +1,30 @@
+{
+  "applications": ["democracy"],
+  "changelogDate": "20230816193138",
+  "entityTableName": "issues",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique", "maxlength"],
+      "fieldValidateRulesMaxlength": "128"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "Issue",
+  "relationships": [
+    {
+      "otherEntityName": "position",
+      "otherEntityRelationshipName": "issue",
+      "relationshipName": "position",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no"
+}
