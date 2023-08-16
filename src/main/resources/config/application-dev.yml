@@ -32,7 +32,9 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://b0f4743d9f76c6:5f200b36@us-cdbr-east-06.cleardb.net/heroku_6eb89f2030d292e?reconnect=true:3306
+    url: jdbc:mysql://nr0ofeyzy3sh7xuz:woiqmnujn3vc1umn@uyu7j8yohcwo35j3.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/aimmzrc3h10zwmjz
+    username: root
+    password:
     hikari:
       poolName: Hikari
       auto-commit: false
