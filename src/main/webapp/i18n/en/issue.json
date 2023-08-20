@@ -20,7 +20,7 @@
       "id": "ID",
       "name": "Name",
       "description": "Description",
-      "position": "Position"
+      "candidate": "Candidate"
     }
   }
 }

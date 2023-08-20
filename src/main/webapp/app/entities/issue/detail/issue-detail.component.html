@@ -22,6 +22,12 @@
         <dd>
           <span>{{ issue.description }}</span>
         </dd>
+        <dt><span jhiTranslate="democracyApp.issue.candidate">Candidate</span></dt>
+        <dd>
+          <div *ngIf="issue.candidate">
+            <a [routerLink]="['/candidate', issue.candidate.id, 'view']">{{ issue.candidate.id }}</a>
+          </div>
+        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

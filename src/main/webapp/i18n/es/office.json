@@ -1,0 +1,27 @@
+{
+  "democracyApp": {
+    "office": {
+      "home": {
+        "title": "Offices",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Office",
+        "createOrEditLabel": "Crear o editar Office",
+        "notFound": "Ningún Offices encontrado"
+      },
+      "created": "Un nuevo Office ha sido creado con el identificador {{ param }}",
+      "updated": "Un Office ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Office ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Office {{ id }}?"
+      },
+      "detail": {
+        "title": "Office"
+      },
+      "id": "ID",
+      "state": "State",
+      "municipality": "Municipality",
+      "federal": "Federal",
+      "candidate": "Candidate"
+    }
+  }
+}

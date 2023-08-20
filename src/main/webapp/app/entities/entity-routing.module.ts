@@ -24,6 +24,11 @@ import { RouterModule } from '@angular/router';
         data: { pageTitle: 'democracyApp.position.home.title' },
         loadChildren: () => import('./position/position.routes'),
       },
+      {
+        path: 'office',
+        data: { pageTitle: 'democracyApp.office.home.title' },
+        loadChildren: () => import('./office/office.routes'),
+      },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),
   ],

@@ -11,6 +11,7 @@
         "address": "Address",
         "issue": "Issue",
         "position": "Position",
+        "office": "Office",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

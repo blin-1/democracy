@@ -54,10 +54,10 @@ describe('Position Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Candidate query and add missing value', () => {
       const position: IPosition = { id: 456 };
-      const candidate: ICandidate = { id: 24166 };
+      const candidate: ICandidate = { id: 21519 };
       position.candidate = candidate;
 
-      const candidateCollection: ICandidate[] = [{ id: 31104 }];
+      const candidateCollection: ICandidate[] = [{ id: 20008 }];
       jest.spyOn(candidateService, 'query').mockReturnValue(of(new HttpResponse({ body: candidateCollection })));
       const additionalCandidates = [candidate];
       const expectedCollection: ICandidate[] = [...additionalCandidates, ...candidateCollection];
@@ -98,7 +98,7 @@ describe('Position Management Update Component', () => {
 
     it('Should update editForm', () => {
       const position: IPosition = { id: 456 };
-      const candidate: ICandidate = { id: 18399 };
+      const candidate: ICandidate = { id: 8226 };
       position.candidate = candidate;
       const issue: IIssue = { id: 14335 };
       position.issue = issue;

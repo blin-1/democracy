@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -35,10 +33,9 @@ public class Issue implements Serializable {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "issue")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "candidate", "issue" }, allowSetters = true)
-    private Set<Position> positions = new HashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = { "issues", "office", "address" }, allowSetters = true)
+    private Candidate candidate;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -81,34 +78,16 @@ public class Issue implements Serializable {
         this.description = description;
     }
 
-    public Set<Position> getPositions() {
-        return this.positions;
+    public Candidate getCandidate() {
+        return this.candidate;
     }
 
-    public void setPositions(Set<Position> positions) {
-        if (this.positions != null) {
-            this.positions.forEach(i -> i.setIssue(null));
-        }
-        if (positions != null) {
-            positions.forEach(i -> i.setIssue(this));
-        }
-        this.positions = positions;
+    public void setCandidate(Candidate candidate) {
+        this.candidate = candidate;
     }
 
-    public Issue positions(Set<Position> positions) {
-        this.setPositions(positions);
-        return this;
-    }
-
-    public Issue addPosition(Position position) {
-        this.positions.add(position);
-        position.setIssue(this);
-        return this;
-    }
-
-    public Issue removePosition(Position position) {
-        this.positions.remove(position);
-        position.setIssue(null);
+    public Issue candidate(Candidate candidate) {
+        this.setCandidate(candidate);
         return this;
     }
 

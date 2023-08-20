@@ -13,6 +13,8 @@ import { CandidateService } from '../service/candidate.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
 import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
+import { IOffice } from 'app/entities/office/office.model';
+import { OfficeService } from 'app/entities/office/service/office.service';
 import { IAddress } from 'app/entities/address/address.model';
 import { AddressService } from 'app/entities/address/service/address.service';
 
@@ -26,6 +28,7 @@ export class CandidateUpdateComponent implements OnInit {
   isSaving = false;
   candidate: ICandidate | null = null;
 
+  officesSharedCollection: IOffice[] = [];
   addressesCollection: IAddress[] = [];
 
   editForm: CandidateFormGroup = this.candidateFormService.createCandidateFormGroup();
@@ -35,10 +38,13 @@ export class CandidateUpdateComponent implements OnInit {
     protected eventManager: EventManager,
     protected candidateService: CandidateService,
     protected candidateFormService: CandidateFormService,
+    protected officeService: OfficeService,
     protected addressService: AddressService,
     protected elementRef: ElementRef,
     protected activatedRoute: ActivatedRoute
   ) {}
+
+  compareOffice = (o1: IOffice | null, o2: IOffice | null): boolean => this.officeService.compareOffice(o1, o2);
 
   compareAddress = (o1: IAddress | null, o2: IAddress | null): boolean => this.addressService.compareAddress(o1, o2);
 
@@ -115,10 +121,20 @@ export class CandidateUpdateComponent implements OnInit {
     this.candidate = candidate;
     this.candidateFormService.resetForm(this.editForm, candidate);
 
+    this.officesSharedCollection = this.officeService.addOfficeToCollectionIfMissing<IOffice>(
+      this.officesSharedCollection,
+      candidate.office
+    );
     this.addressesCollection = this.addressService.addAddressToCollectionIfMissing<IAddress>(this.addressesCollection, candidate.address);
   }
 
   protected loadRelationshipsOptions(): void {
+    this.officeService
+      .query()
+      .pipe(map((res: HttpResponse<IOffice[]>) => res.body ?? []))
+      .pipe(map((offices: IOffice[]) => this.officeService.addOfficeToCollectionIfMissing<IOffice>(offices, this.candidate?.office)))
+      .subscribe((offices: IOffice[]) => (this.officesSharedCollection = offices));
+
     this.addressService
       .query({ filter: 'candidate-is-null' })
       .pipe(map((res: HttpResponse<IAddress[]>) => res.body ?? []))

@@ -105,17 +105,18 @@
         </div>
 
         <div class="mb-3">
-          <label class="form-label" jhiTranslate="democracyApp.candidate.imageUrl" for="field_imageUrl">Image Url</label>
-          <input type="text" class="form-control" name="imageUrl" id="field_imageUrl" data-cy="imageUrl" formControlName="imageUrl" />
-          <div *ngIf="editForm.get('imageUrl')!.invalid && (editForm.get('imageUrl')!.dirty || editForm.get('imageUrl')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('imageUrl')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-          </div>
+          <label class="form-label" jhiTranslate="democracyApp.candidate.office" for="field_office">Office</label>
+          <select
+            class="form-control"
+            id="field_office"
+            data-cy="office"
+            name="office"
+            formControlName="office"
+            [compareWith]="compareOffice"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="officeOption" *ngFor="let officeOption of officesSharedCollection">{{ officeOption.id }}</option>
+          </select>
         </div>
 
         <div class="mb-3">

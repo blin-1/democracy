@@ -48,19 +48,19 @@ public class Candidate implements Serializable {
     @Column(name = "pic_content_type", nullable = false)
     private String picContentType;
 
-    @NotNull
-    @Column(name = "image_url", nullable = false)
-    private String imageUrl;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "candidate")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "candidate" }, allowSetters = true)
+    private Set<Issue> issues = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = { "candidates" }, allowSetters = true)
+    private Office office;
 
     @JsonIgnoreProperties(value = { "candidate" }, allowSetters = true)
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(unique = true)
     private Address address;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "candidate")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "candidate", "issue" }, allowSetters = true)
-    private Set<Position> positions = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -142,17 +142,48 @@ public class Candidate implements Serializable {
         this.picContentType = picContentType;
     }
 
-    public String getImageUrl() {
-        return this.imageUrl;
+    public Set<Issue> getIssues() {
+        return this.issues;
     }
 
-    public Candidate imageUrl(String imageUrl) {
-        this.setImageUrl(imageUrl);
+    public void setIssues(Set<Issue> issues) {
+        if (this.issues != null) {
+            this.issues.forEach(i -> i.setCandidate(null));
+        }
+        if (issues != null) {
+            issues.forEach(i -> i.setCandidate(this));
+        }
+        this.issues = issues;
+    }
+
+    public Candidate issues(Set<Issue> issues) {
+        this.setIssues(issues);
         return this;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public Candidate addIssue(Issue issue) {
+        this.issues.add(issue);
+        issue.setCandidate(this);
+        return this;
+    }
+
+    public Candidate removeIssue(Issue issue) {
+        this.issues.remove(issue);
+        issue.setCandidate(null);
+        return this;
+    }
+
+    public Office getOffice() {
+        return this.office;
+    }
+
+    public void setOffice(Office office) {
+        this.office = office;
+    }
+
+    public Candidate office(Office office) {
+        this.setOffice(office);
+        return this;
     }
 
     public Address getAddress() {
@@ -165,37 +196,6 @@ public class Candidate implements Serializable {
 
     public Candidate address(Address address) {
         this.setAddress(address);
-        return this;
-    }
-
-    public Set<Position> getPositions() {
-        return this.positions;
-    }
-
-    public void setPositions(Set<Position> positions) {
-        if (this.positions != null) {
-            this.positions.forEach(i -> i.setCandidate(null));
-        }
-        if (positions != null) {
-            positions.forEach(i -> i.setCandidate(this));
-        }
-        this.positions = positions;
-    }
-
-    public Candidate positions(Set<Position> positions) {
-        this.setPositions(positions);
-        return this;
-    }
-
-    public Candidate addPosition(Position position) {
-        this.positions.add(position);
-        position.setCandidate(this);
-        return this;
-    }
-
-    public Candidate removePosition(Position position) {
-        this.positions.remove(position);
-        position.setCandidate(null);
         return this;
     }
 
@@ -228,7 +228,6 @@ public class Candidate implements Serializable {
             ", email='" + getEmail() + "'" +
             ", pic='" + getPic() + "'" +
             ", picContentType='" + getPicContentType() + "'" +
-            ", imageUrl='" + getImageUrl() + "'" +
             "}";
     }
 }

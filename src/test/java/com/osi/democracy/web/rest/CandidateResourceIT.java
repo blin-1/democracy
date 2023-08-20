@@ -44,9 +44,6 @@ class CandidateResourceIT {
     private static final String DEFAULT_PIC_CONTENT_TYPE = "image/jpg";
     private static final String UPDATED_PIC_CONTENT_TYPE = "image/png";
 
-    private static final String DEFAULT_IMAGE_URL = "AAAAAAAAAA";
-    private static final String UPDATED_IMAGE_URL = "BBBBBBBBBB";
-
     private static final String ENTITY_API_URL = "/api/candidates";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -76,8 +73,7 @@ class CandidateResourceIT {
             .lastName(DEFAULT_LAST_NAME)
             .email(DEFAULT_EMAIL)
             .pic(DEFAULT_PIC)
-            .picContentType(DEFAULT_PIC_CONTENT_TYPE)
-            .imageUrl(DEFAULT_IMAGE_URL);
+            .picContentType(DEFAULT_PIC_CONTENT_TYPE);
         return candidate;
     }
 
@@ -93,8 +89,7 @@ class CandidateResourceIT {
             .lastName(UPDATED_LAST_NAME)
             .email(UPDATED_EMAIL)
             .pic(UPDATED_PIC)
-            .picContentType(UPDATED_PIC_CONTENT_TYPE)
-            .imageUrl(UPDATED_IMAGE_URL);
+            .picContentType(UPDATED_PIC_CONTENT_TYPE);
         return candidate;
     }
 
@@ -121,7 +116,6 @@ class CandidateResourceIT {
         assertThat(testCandidate.getEmail()).isEqualTo(DEFAULT_EMAIL);
         assertThat(testCandidate.getPic()).isEqualTo(DEFAULT_PIC);
         assertThat(testCandidate.getPicContentType()).isEqualTo(DEFAULT_PIC_CONTENT_TYPE);
-        assertThat(testCandidate.getImageUrl()).isEqualTo(DEFAULT_IMAGE_URL);
     }
 
     @Test
@@ -195,23 +189,6 @@ class CandidateResourceIT {
 
     @Test
     @Transactional
-    void checkImageUrlIsRequired() throws Exception {
-        int databaseSizeBeforeTest = candidateRepository.findAll().size();
-        // set the field null
-        candidate.setImageUrl(null);
-
-        // Create the Candidate, which fails.
-
-        restCandidateMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(candidate)))
-            .andExpect(status().isBadRequest());
-
-        List<Candidate> candidateList = candidateRepository.findAll();
-        assertThat(candidateList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     void getAllCandidates() throws Exception {
         // Initialize the database
         candidateRepository.saveAndFlush(candidate);
@@ -226,8 +203,7 @@ class CandidateResourceIT {
             .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME)))
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
             .andExpect(jsonPath("$.[*].picContentType").value(hasItem(DEFAULT_PIC_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].pic").value(hasItem(Base64Utils.encodeToString(DEFAULT_PIC))))
-            .andExpect(jsonPath("$.[*].imageUrl").value(hasItem(DEFAULT_IMAGE_URL)));
+            .andExpect(jsonPath("$.[*].pic").value(hasItem(Base64Utils.encodeToString(DEFAULT_PIC))));
     }
 
     @Test
@@ -246,8 +222,7 @@ class CandidateResourceIT {
             .andExpect(jsonPath("$.lastName").value(DEFAULT_LAST_NAME))
             .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL))
             .andExpect(jsonPath("$.picContentType").value(DEFAULT_PIC_CONTENT_TYPE))
-            .andExpect(jsonPath("$.pic").value(Base64Utils.encodeToString(DEFAULT_PIC)))
-            .andExpect(jsonPath("$.imageUrl").value(DEFAULT_IMAGE_URL));
+            .andExpect(jsonPath("$.pic").value(Base64Utils.encodeToString(DEFAULT_PIC)));
     }
 
     @Test
@@ -274,8 +249,7 @@ class CandidateResourceIT {
             .lastName(UPDATED_LAST_NAME)
             .email(UPDATED_EMAIL)
             .pic(UPDATED_PIC)
-            .picContentType(UPDATED_PIC_CONTENT_TYPE)
-            .imageUrl(UPDATED_IMAGE_URL);
+            .picContentType(UPDATED_PIC_CONTENT_TYPE);
 
         restCandidateMockMvc
             .perform(
@@ -294,7 +268,6 @@ class CandidateResourceIT {
         assertThat(testCandidate.getEmail()).isEqualTo(UPDATED_EMAIL);
         assertThat(testCandidate.getPic()).isEqualTo(UPDATED_PIC);
         assertThat(testCandidate.getPicContentType()).isEqualTo(UPDATED_PIC_CONTENT_TYPE);
-        assertThat(testCandidate.getImageUrl()).isEqualTo(UPDATED_IMAGE_URL);
     }
 
     @Test
@@ -384,7 +357,6 @@ class CandidateResourceIT {
         assertThat(testCandidate.getEmail()).isEqualTo(DEFAULT_EMAIL);
         assertThat(testCandidate.getPic()).isEqualTo(UPDATED_PIC);
         assertThat(testCandidate.getPicContentType()).isEqualTo(UPDATED_PIC_CONTENT_TYPE);
-        assertThat(testCandidate.getImageUrl()).isEqualTo(DEFAULT_IMAGE_URL);
     }
 
     @Test
@@ -404,8 +376,7 @@ class CandidateResourceIT {
             .lastName(UPDATED_LAST_NAME)
             .email(UPDATED_EMAIL)
             .pic(UPDATED_PIC)
-            .picContentType(UPDATED_PIC_CONTENT_TYPE)
-            .imageUrl(UPDATED_IMAGE_URL);
+            .picContentType(UPDATED_PIC_CONTENT_TYPE);
 
         restCandidateMockMvc
             .perform(
@@ -424,7 +395,6 @@ class CandidateResourceIT {
         assertThat(testCandidate.getEmail()).isEqualTo(UPDATED_EMAIL);
         assertThat(testCandidate.getPic()).isEqualTo(UPDATED_PIC);
         assertThat(testCandidate.getPicContentType()).isEqualTo(UPDATED_PIC_CONTENT_TYPE);
-        assertThat(testCandidate.getImageUrl()).isEqualTo(UPDATED_IMAGE_URL);
     }
 
     @Test

@@ -1,0 +1,34 @@
+{
+  "applications": ["democracy"],
+  "changelogDate": "20230819014311",
+  "entityTableName": "offices",
+  "fields": [
+    {
+      "fieldName": "state",
+      "fieldType": "State",
+      "fieldValues": "AL (Alabama),NJ (New Jersey),NY (New York)"
+    },
+    {
+      "fieldName": "municipality",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "128"
+    },
+    {
+      "fieldName": "federal",
+      "fieldType": "YesNo",
+      "fieldValues": "Y (Yes),N (No)"
+    }
+  ],
+  "name": "Office",
+  "relationships": [
+    {
+      "otherEntityName": "candidate",
+      "otherEntityRelationshipName": "office",
+      "relationshipName": "candidate",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no"
+}

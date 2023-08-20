@@ -23,7 +23,7 @@ type CandidateFormGroupContent = {
   email: FormControl<ICandidate['email']>;
   pic: FormControl<ICandidate['pic']>;
   picContentType: FormControl<ICandidate['picContentType']>;
-  imageUrl: FormControl<ICandidate['imageUrl']>;
+  office: FormControl<ICandidate['office']>;
   address: FormControl<ICandidate['address']>;
 };
 
@@ -57,9 +57,7 @@ export class CandidateFormService {
         validators: [Validators.required],
       }),
       picContentType: new FormControl(candidateRawValue.picContentType),
-      imageUrl: new FormControl(candidateRawValue.imageUrl, {
-        validators: [Validators.required],
-      }),
+      office: new FormControl(candidateRawValue.office),
       address: new FormControl(candidateRawValue.address),
     });
   }

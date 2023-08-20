@@ -62,9 +62,9 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="imageUrl">
+          <th scope="col" jhiSortBy="office.id">
             <div class="d-flex">
-              <span jhiTranslate="democracyApp.candidate.imageUrl">Image Url</span>
+              <span jhiTranslate="democracyApp.candidate.office">Office</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
@@ -91,7 +91,11 @@
             </a>
             <span *ngIf="candidate.pic">{{ candidate.picContentType }}, {{ byteSize(candidate.pic) }}</span>
           </td>
-          <td>{{ candidate.imageUrl }}</td>
+          <td>
+            <div *ngIf="candidate.office">
+              <a [routerLink]="['/office', candidate.office.id, 'view']">{{ candidate.office.id }}</a>
+            </div>
+          </td>
           <td>
             <div *ngIf="candidate.address">
               <a [routerLink]="['/address', candidate.address.id, 'view']">{{ candidate.address.id }}</a>

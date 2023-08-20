@@ -20,6 +20,7 @@ type IssueFormGroupContent = {
   id: FormControl<IIssue['id'] | NewIssue['id']>;
   name: FormControl<IIssue['name']>;
   description: FormControl<IIssue['description']>;
+  candidate: FormControl<IIssue['candidate']>;
 };
 
 export type IssueFormGroup = FormGroup<IssueFormGroupContent>;
@@ -45,6 +46,7 @@ export class IssueFormService {
       description: new FormControl(issueRawValue.description, {
         validators: [Validators.required],
       }),
+      candidate: new FormControl(issueRawValue.candidate),
     });
   }
 

@@ -24,7 +24,7 @@ describe('Candidate Form Service', () => {
             lastName: expect.any(Object),
             email: expect.any(Object),
             pic: expect.any(Object),
-            imageUrl: expect.any(Object),
+            office: expect.any(Object),
             address: expect.any(Object),
           })
         );
@@ -40,7 +40,7 @@ describe('Candidate Form Service', () => {
             lastName: expect.any(Object),
             email: expect.any(Object),
             pic: expect.any(Object),
-            imageUrl: expect.any(Object),
+            office: expect.any(Object),
             address: expect.any(Object),
           })
         );

@@ -1,3 +1,4 @@
+import { IOffice } from 'app/entities/office/office.model';
 import { IAddress } from 'app/entities/address/address.model';
 
 export interface ICandidate {
@@ -7,7 +8,7 @@ export interface ICandidate {
   email?: string | null;
   pic?: string | null;
   picContentType?: string | null;
-  imageUrl?: string | null;
+  office?: Pick<IOffice, 'id'> | null;
   address?: Pick<IAddress, 'id'> | null;
 }
 

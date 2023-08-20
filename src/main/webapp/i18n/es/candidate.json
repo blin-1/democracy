@@ -22,9 +22,9 @@
       "lastName": "Last Name",
       "email": "Email",
       "pic": "Pic",
-      "imageUrl": "Image Url",
-      "address": "Address",
-      "position": "Position"
+      "issue": "Issue",
+      "office": "Office",
+      "address": "Address"
     }
   }
 }

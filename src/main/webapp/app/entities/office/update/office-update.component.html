@@ -1,0 +1,74 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-office-heading" data-cy="OfficeCreateUpdateHeading" jhiTranslate="democracyApp.office.home.createOrEditLabel">
+        Create or edit a Office
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="democracyApp.office.state" for="field_state">State</label>
+          <select class="form-control" name="state" formControlName="state" id="field_state" data-cy="state">
+            <option [ngValue]="null">{{ 'democracyApp.State.null' | translate }}</option>
+            <option *ngFor="let state of stateValues" [value]="state">{{ 'democracyApp.State.' + state | translate }}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="democracyApp.office.municipality" for="field_municipality">Municipality</label>
+          <input
+            type="text"
+            class="form-control"
+            name="municipality"
+            id="field_municipality"
+            data-cy="municipality"
+            formControlName="municipality"
+          />
+          <div
+            *ngIf="editForm.get('municipality')!.invalid && (editForm.get('municipality')!.dirty || editForm.get('municipality')!.touched)"
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('municipality')?.errors?.maxlength"
+              jhiTranslate="entity.validation.maxlength"
+              [translateValues]="{ max: 128 }"
+            >
+              This field cannot be longer than 128 characters.
+            </small>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="democracyApp.office.federal" for="field_federal">Federal</label>
+          <select class="form-control" name="federal" formControlName="federal" id="field_federal" data-cy="federal">
+            <option [ngValue]="null">{{ 'democracyApp.YesNo.null' | translate }}</option>
+            <option *ngFor="let yesNo of yesNoValues" [value]="yesNo">{{ 'democracyApp.YesNo.' + yesNo | translate }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

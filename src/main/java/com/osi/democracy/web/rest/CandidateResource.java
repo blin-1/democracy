@@ -140,9 +140,6 @@ public class CandidateResource {
                 if (candidate.getPicContentType() != null) {
                     existingCandidate.setPicContentType(candidate.getPicContentType());
                 }
-                if (candidate.getImageUrl() != null) {
-                    existingCandidate.setImageUrl(candidate.getImageUrl());
-                }
 
                 return existingCandidate;
             })

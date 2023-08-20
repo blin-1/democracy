@@ -29,11 +29,11 @@ public class Position implements Serializable {
     private Integer available;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "address", "positions" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "issues", "office", "address" }, allowSetters = true)
     private Candidate candidate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "positions" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "candidate" }, allowSetters = true)
     private Issue issue;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

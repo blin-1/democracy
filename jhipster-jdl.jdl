@@ -20,16 +20,12 @@ entity Candidate       (candidates) {
    lastName       String      required maxlength(128)
    email          String      required unique
    pic            ImageBlob   required
-   imageUrl       String      required
 }
 
-entity Address  (addresses) {
-   //id             Bigint      required unique
-   line1          String      required maxlength(128)
-   line2          String      maxlength(128)
-   city           String      required maxlength(64)
-   state          State       required
-   zip            String      required maxlength(6)
+entity Office (offices) {
+	state State 
+	municipality String	  maxlength(128)
+	federal      YesNo
 }
 
 entity Issue  (issues) {
@@ -38,22 +34,12 @@ entity Issue  (issues) {
    description    TextBlob    required 
 }
 
-entity Position  (positions) {
-   //id             Bigint      required unique
-   available      Integer     required
-}
-
-
-relationship OneToOne {
-  Candidate to Address
-}
-
 relationship OneToMany {
-  Candidate to Position
-  Issue to Position
+  Candidate to Issue
+  Office to Candidate
 }
 
-//relationship ManyToMany {
+//relationship ManyToOne {
 //  Inventory{id} to Strain{id}
 //}
 
@@ -61,4 +47,9 @@ enum State {
   AL (Alabama)
   NJ ("New Jersey")
   NY ("New York")
+}  
+
+enum YesNo {
+  Y (Yes)
+  N (No)
 }  

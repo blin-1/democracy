@@ -49,7 +49,7 @@ public class Address implements Serializable {
     @Column(name = "zip", length = 6, nullable = false)
     private String zip;
 
-    @JsonIgnoreProperties(value = { "address", "positions" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "issues", "office", "address" }, allowSetters = true)
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "address")
     private Candidate candidate;
 

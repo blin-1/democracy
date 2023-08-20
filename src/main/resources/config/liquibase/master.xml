@@ -15,8 +15,10 @@
     <include file="config/liquibase/changelog/20230816193137_added_entity_Address.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230816193138_added_entity_Issue.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230816193139_added_entity_Position.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230819014311_added_entity_Office.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20230816193136_added_entity_constraints_Candidate.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230816193138_added_entity_constraints_Issue.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230816193139_added_entity_constraints_Position.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->

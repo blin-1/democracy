@@ -35,9 +35,11 @@
             {{ candidate.picContentType }}, {{ byteSize(candidate.pic) }}
           </div>
         </dd>
-        <dt><span jhiTranslate="democracyApp.candidate.imageUrl">Image Url</span></dt>
+        <dt><span jhiTranslate="democracyApp.candidate.office">Office</span></dt>
         <dd>
-          <span>{{ candidate.imageUrl }}</span>
+          <div *ngIf="candidate.office">
+            <a [routerLink]="['/office', candidate.office.id, 'view']">{{ candidate.office.id }}</a>
+          </div>
         </dd>
         <dt><span jhiTranslate="democracyApp.candidate.address">Address</span></dt>
         <dd>

@@ -21,4 +21,9 @@ export const EntityNavbarItems: NavbarItem[] = [
     route: '/position',
     translationKey: 'global.menu.entities.position',
   },
+  {
+    name: 'Office',
+    route: '/office',
+    translationKey: 'global.menu.entities.office',
+  },
 ];

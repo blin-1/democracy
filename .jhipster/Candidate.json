@@ -25,28 +25,23 @@
       "fieldType": "byte[]",
       "fieldTypeBlobContent": "image",
       "fieldValidateRules": ["required"]
-    },
-    {
-      "fieldName": "imageUrl",
-      "fieldType": "String",
-      "fieldValidateRules": ["required"]
     }
   ],
   "name": "Candidate",
   "relationships": [
     {
-      "otherEntityName": "address",
+      "otherEntityName": "issue",
       "otherEntityRelationshipName": "candidate",
-      "relationshipName": "address",
-      "relationshipSide": "left",
-      "relationshipType": "one-to-one"
-    },
-    {
-      "otherEntityName": "position",
-      "otherEntityRelationshipName": "candidate",
-      "relationshipName": "position",
+      "relationshipName": "issue",
       "relationshipSide": "left",
       "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "office",
+      "otherEntityRelationshipName": "candidate",
+      "relationshipName": "office",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
     }
   ],
   "searchEngine": "no"

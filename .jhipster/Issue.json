@@ -19,11 +19,11 @@
   "name": "Issue",
   "relationships": [
     {
-      "otherEntityName": "position",
+      "otherEntityName": "candidate",
       "otherEntityRelationshipName": "issue",
-      "relationshipName": "position",
-      "relationshipSide": "left",
-      "relationshipType": "one-to-many"
+      "relationshipName": "candidate",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
     }
   ],
   "searchEngine": "no"
