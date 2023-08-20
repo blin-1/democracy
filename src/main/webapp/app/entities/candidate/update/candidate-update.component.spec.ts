@@ -11,8 +11,6 @@ import { CandidateService } from '../service/candidate.service';
 import { ICandidate } from '../candidate.model';
 import { IOffice } from 'app/entities/office/office.model';
 import { OfficeService } from 'app/entities/office/service/office.service';
-import { IAddress } from 'app/entities/address/address.model';
-import { AddressService } from 'app/entities/address/service/address.service';
 
 import { CandidateUpdateComponent } from './candidate-update.component';
 
@@ -23,7 +21,6 @@ describe('Candidate Management Update Component', () => {
   let candidateFormService: CandidateFormService;
   let candidateService: CandidateService;
   let officeService: OfficeService;
-  let addressService: AddressService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -46,7 +43,6 @@ describe('Candidate Management Update Component', () => {
     candidateFormService = TestBed.inject(CandidateFormService);
     candidateService = TestBed.inject(CandidateService);
     officeService = TestBed.inject(OfficeService);
-    addressService = TestBed.inject(AddressService);
 
     comp = fixture.componentInstance;
   });
@@ -74,36 +70,15 @@ describe('Candidate Management Update Component', () => {
       expect(comp.officesSharedCollection).toEqual(expectedCollection);
     });
 
-    it('Should call address query and add missing value', () => {
-      const candidate: ICandidate = { id: 456 };
-      const address: IAddress = { id: 23516 };
-      candidate.address = address;
-
-      const addressCollection: IAddress[] = [{ id: 29798 }];
-      jest.spyOn(addressService, 'query').mockReturnValue(of(new HttpResponse({ body: addressCollection })));
-      const expectedCollection: IAddress[] = [address, ...addressCollection];
-      jest.spyOn(addressService, 'addAddressToCollectionIfMissing').mockReturnValue(expectedCollection);
-
-      activatedRoute.data = of({ candidate });
-      comp.ngOnInit();
-
-      expect(addressService.query).toHaveBeenCalled();
-      expect(addressService.addAddressToCollectionIfMissing).toHaveBeenCalledWith(addressCollection, address);
-      expect(comp.addressesCollection).toEqual(expectedCollection);
-    });
-
     it('Should update editForm', () => {
       const candidate: ICandidate = { id: 456 };
       const office: IOffice = { id: 32041 };
       candidate.office = office;
-      const address: IAddress = { id: 3507 };
-      candidate.address = address;
 
       activatedRoute.data = of({ candidate });
       comp.ngOnInit();
 
       expect(comp.officesSharedCollection).toContain(office);
-      expect(comp.addressesCollection).toContain(address);
       expect(comp.candidate).toEqual(candidate);
     });
   });
@@ -184,16 +159,6 @@ describe('Candidate Management Update Component', () => {
         jest.spyOn(officeService, 'compareOffice');
         comp.compareOffice(entity, entity2);
         expect(officeService.compareOffice).toHaveBeenCalledWith(entity, entity2);
-      });
-    });
-
-    describe('compareAddress', () => {
-      it('Should forward to addressService', () => {
-        const entity = { id: 123 };
-        const entity2 = { id: 456 };
-        jest.spyOn(addressService, 'compareAddress');
-        comp.compareAddress(entity, entity2);
-        expect(addressService.compareAddress).toHaveBeenCalledWith(entity, entity2);
       });
     });
   });

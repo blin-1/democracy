@@ -1,0 +1,59 @@
+application {
+  config {
+    baseName democracy
+    applicationType monolith
+    packageName com.osi.democracy
+    authenticationType jwt
+    prodDatabaseType mysql
+    
+    //messageBroker	no,
+    //searchEngine    no,
+    //serviceDiscoveryType no,
+    //websocket no
+  }
+  entities * 
+}
+
+entity Candidate       (candidates) {
+   //id             Bigint      required unique
+   firstName      String	  required maxlength(128)
+   lastName       String      required maxlength(128)
+   email          String      required unique
+   pic            ImageBlob   required
+}
+
+entity Office (offices) {
+	state State 
+	municipality String	  maxlength(128)
+	federal      YesNo
+}
+
+entity Issue  (issues) {
+   //id             Bigint      required unique
+   name           String      required unique maxlength(128)
+   description    TextBlob    required 
+}
+
+relationship OneToMany {
+  Candidate to Issue
+  Office to Candidate
+}
+
+//relationship ManyToOne {
+//  Inventory{id} to Strain{id}
+//}
+
+enum State {
+  AL (Alabama)
+  NJ ("New Jersey")
+  NY ("New York")
+}  
+
+enum YesNo {
+  Y (Yes)
+  N (No)
+}  
+
+dto * with mapstruct
+service * with serviceClass
+paginate * with pagination   

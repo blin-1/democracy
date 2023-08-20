@@ -11,7 +11,6 @@ import { NgbDateAdapter, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap'
 
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import './config/dayjs';
-import { TranslationModule } from 'app/shared/language/translation.module';
 import { AppRoutingModule } from './app-routing.module';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { NgbDateDayjsAdapter } from './config/datepicker-adapter';
@@ -30,7 +29,6 @@ import { AppPageTitleStrategy } from './app-page-title-strategy';
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: false }),
     HttpClientModule,
     MainModule,
-    TranslationModule,
   ],
   providers: [
     Title,

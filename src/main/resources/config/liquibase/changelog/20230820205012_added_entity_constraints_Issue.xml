@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <!--
+        Added the constraints for entity Issue.
+    -->
+    <changeSet id="20230820205012-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="candidate_id"
+                                 baseTableName="issues"
+                                 constraintName="fk_issues__candidate_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="candidates"
+                                 />
+    </changeSet>
+</databaseChangeLog>

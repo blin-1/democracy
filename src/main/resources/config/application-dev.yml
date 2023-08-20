@@ -32,10 +32,9 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    #url: jdbc:mariadb://localhost:3306/democracy?useLegacyDatetimeCode=false&serverTimezone=UTC
-    url: jdbc:mariadb://uyu7j8yohcwo35j3.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/aimmzrc3h10zwmjz??useLegacyDatetimeCode=false&serverTimezone=UTC
-    username: nr0ofeyzy3sh7xuz
-    password: woiqmnujn3vc1umn
+    url: jdbc:mysql://ckshdphy86qnz0bj.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/udqm02wgno4c7r1d?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+    username: xvzhsfqg1439odz5
+    password: xvz1zrq5bh7kgq1n
     hikari:
       poolName: Hikari
       auto-commit: false
@@ -86,7 +85,7 @@ jhipster:
     authentication:
       jwt:
         # This token must be encoded using Base64 and be at least 256 bits long (you can type `openssl rand -base64 64` on your command line to generate a 512 bits one)
-        base64-secret: YmQ0MWNjYjcxODY0M2JhOTM0MjZlZjRjZmNmYzNkZmYyYTBmN2EwNWM4N2I2NGVhMWJkMDMxNWJmYjVjZDdmYjAzMTI1ZTBhZjEwMTM2Y2E3NzFkNGE2MTc0YzllODUwOGVjYTM3NzE1OTgzMWRlZTA3YzRjOWM1MzFhNjdhNGM=
+        base64-secret: MGNiZWZkMzBjY2EwOTI1NzExOTE1MzY2YmFjMjYzYWNhYWIxMzU1MGU0MDFjZjAwM2E2ZjA2MzNkMTQ5OTg5OTQwZjg0ZTIzNjY2NmE0MjRmZmE1M2QyY2E1YmNlYzc1M2RlMzAzMzc2MTUwYzA5ZDIzYTQ1OTBjY2YxNDUyYTc=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 2592000

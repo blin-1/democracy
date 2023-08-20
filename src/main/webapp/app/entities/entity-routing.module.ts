@@ -6,28 +6,18 @@ import { RouterModule } from '@angular/router';
     RouterModule.forChild([
       {
         path: 'candidate',
-        data: { pageTitle: 'democracyApp.candidate.home.title' },
+        data: { pageTitle: 'Candidates' },
         loadChildren: () => import('./candidate/candidate.routes'),
       },
       {
-        path: 'address',
-        data: { pageTitle: 'democracyApp.address.home.title' },
-        loadChildren: () => import('./address/address.routes'),
+        path: 'office',
+        data: { pageTitle: 'Offices' },
+        loadChildren: () => import('./office/office.routes'),
       },
       {
         path: 'issue',
-        data: { pageTitle: 'democracyApp.issue.home.title' },
+        data: { pageTitle: 'Issues' },
         loadChildren: () => import('./issue/issue.routes'),
-      },
-      {
-        path: 'position',
-        data: { pageTitle: 'democracyApp.position.home.title' },
-        loadChildren: () => import('./position/position.routes'),
-      },
-      {
-        path: 'office',
-        data: { pageTitle: 'democracyApp.office.home.title' },
-        loadChildren: () => import('./office/office.routes'),
       },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),

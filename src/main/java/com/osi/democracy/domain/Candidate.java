@@ -21,8 +21,7 @@ public class Candidate implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -56,11 +55,6 @@ public class Candidate implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "candidates" }, allowSetters = true)
     private Office office;
-
-    @JsonIgnoreProperties(value = { "candidate" }, allowSetters = true)
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(unique = true)
-    private Address address;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -183,19 +177,6 @@ public class Candidate implements Serializable {
 
     public Candidate office(Office office) {
         this.setOffice(office);
-        return this;
-    }
-
-    public Address getAddress() {
-        return this.address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    public Candidate address(Address address) {
-        this.setAddress(address);
         return this;
     }
 

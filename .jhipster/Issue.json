@@ -1,6 +1,7 @@
 {
   "applications": ["democracy"],
-  "changelogDate": "20230816193138",
+  "changelogDate": "20230820205012",
+  "dto": "mapstruct",
   "entityTableName": "issues",
   "fields": [
     {
@@ -17,6 +18,7 @@
     }
   ],
   "name": "Issue",
+  "pagination": "pagination",
   "relationships": [
     {
       "otherEntityName": "candidate",
@@ -26,5 +28,6 @@
       "relationshipType": "many-to-one"
     }
   ],
-  "searchEngine": "no"
+  "searchEngine": "no",
+  "service": "serviceClass"
 }

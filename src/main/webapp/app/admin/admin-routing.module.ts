@@ -9,32 +9,32 @@ import { RouterModule } from '@angular/router';
       {
         path: 'user-management',
         loadChildren: () => import('./user-management/user-management.route'),
-        title: 'userManagement.home.title',
+        title: 'Users',
       },
       {
         path: 'docs',
         loadComponent: () => import('./docs/docs.component'),
-        title: 'global.menu.admin.apidocs',
+        title: 'API',
       },
       {
         path: 'configuration',
         loadComponent: () => import('./configuration/configuration.component'),
-        title: 'configuration.title',
+        title: 'Configuration',
       },
       {
         path: 'health',
         loadComponent: () => import('./health/health.component'),
-        title: 'health.title',
+        title: 'Health Checks',
       },
       {
         path: 'logs',
         loadComponent: () => import('./logs/logs.component'),
-        title: 'logs.title',
+        title: 'Logs',
       },
       {
         path: 'metrics',
         loadComponent: () => import('./metrics/metrics.component'),
-        title: 'metrics.title',
+        title: 'Application Metrics',
       },
       /* jhipster-needle-add-admin-route - JHipster will add admin routes here */
     ]),

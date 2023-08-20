@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
     <div *ngIf="candidate">
-      <h2 data-cy="candidateDetailsHeading"><span jhiTranslate="democracyApp.candidate.detail.title">Candidate</span></h2>
+      <h2 data-cy="candidateDetailsHeading"><span>Candidate</span></h2>
 
       <hr />
 
@@ -10,23 +10,23 @@
       <jhi-alert></jhi-alert>
 
       <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dt><span>ID</span></dt>
         <dd>
           <span>{{ candidate.id }}</span>
         </dd>
-        <dt><span jhiTranslate="democracyApp.candidate.firstName">First Name</span></dt>
+        <dt><span>First Name</span></dt>
         <dd>
           <span>{{ candidate.firstName }}</span>
         </dd>
-        <dt><span jhiTranslate="democracyApp.candidate.lastName">Last Name</span></dt>
+        <dt><span>Last Name</span></dt>
         <dd>
           <span>{{ candidate.lastName }}</span>
         </dd>
-        <dt><span jhiTranslate="democracyApp.candidate.email">Email</span></dt>
+        <dt><span>Email</span></dt>
         <dd>
           <span>{{ candidate.email }}</span>
         </dd>
-        <dt><span jhiTranslate="democracyApp.candidate.pic">Pic</span></dt>
+        <dt><span>Pic</span></dt>
         <dd>
           <div *ngIf="candidate.pic">
             <a (click)="openFile(candidate.pic, candidate.picContentType)">
@@ -35,26 +35,20 @@
             {{ candidate.picContentType }}, {{ byteSize(candidate.pic) }}
           </div>
         </dd>
-        <dt><span jhiTranslate="democracyApp.candidate.office">Office</span></dt>
+        <dt><span>Office</span></dt>
         <dd>
           <div *ngIf="candidate.office">
             <a [routerLink]="['/office', candidate.office.id, 'view']">{{ candidate.office.id }}</a>
           </div>
         </dd>
-        <dt><span jhiTranslate="democracyApp.candidate.address">Address</span></dt>
-        <dd>
-          <div *ngIf="candidate.address">
-            <a [routerLink]="['/address', candidate.address.id, 'view']">{{ candidate.address.id }}</a>
-          </div>
-        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
       </button>
 
       <button type="button" [routerLink]="['/candidate', candidate.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
       </button>
     </div>
   </div>

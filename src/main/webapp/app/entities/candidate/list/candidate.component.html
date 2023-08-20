@@ -1,11 +1,11 @@
 <div>
   <h2 id="page-heading" data-cy="CandidateHeading">
-    <span jhiTranslate="democracyApp.candidate.home.title">Candidates</span>
+    <span>Candidates</span>
 
     <div class="d-flex justify-content-end">
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="democracyApp.candidate.home.refreshListLabel">Refresh list</span>
+        <span>Refresh list</span>
       </button>
 
       <button
@@ -15,7 +15,7 @@
         [routerLink]="['/candidate/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="democracyApp.candidate.home.createLabel"> Create a new Candidate </span>
+        <span> Create a new Candidate </span>
       </button>
     </div>
   </h2>
@@ -25,7 +25,7 @@
   <jhi-alert></jhi-alert>
 
   <div class="alert alert-warning" id="no-result" *ngIf="candidates?.length === 0">
-    <span jhiTranslate="democracyApp.candidate.home.notFound">No Candidates found</span>
+    <span>No Candidates found</span>
   </div>
 
   <div class="table-responsive table-entities" id="entities" *ngIf="candidates && candidates.length > 0">
@@ -34,43 +34,37 @@
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
           <th scope="col" jhiSortBy="id">
             <div class="d-flex">
-              <span jhiTranslate="global.field.id">ID</span>
+              <span>ID</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           <th scope="col" jhiSortBy="firstName">
             <div class="d-flex">
-              <span jhiTranslate="democracyApp.candidate.firstName">First Name</span>
+              <span>First Name</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           <th scope="col" jhiSortBy="lastName">
             <div class="d-flex">
-              <span jhiTranslate="democracyApp.candidate.lastName">Last Name</span>
+              <span>Last Name</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           <th scope="col" jhiSortBy="email">
             <div class="d-flex">
-              <span jhiTranslate="democracyApp.candidate.email">Email</span>
+              <span>Email</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           <th scope="col" jhiSortBy="pic">
             <div class="d-flex">
-              <span jhiTranslate="democracyApp.candidate.pic">Pic</span>
+              <span>Pic</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           <th scope="col" jhiSortBy="office.id">
             <div class="d-flex">
-              <span jhiTranslate="democracyApp.candidate.office">Office</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="address.id">
-            <div class="d-flex">
-              <span jhiTranslate="democracyApp.candidate.address">Address</span>
+              <span>Office</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
@@ -96,11 +90,6 @@
               <a [routerLink]="['/office', candidate.office.id, 'view']">{{ candidate.office.id }}</a>
             </div>
           </td>
-          <td>
-            <div *ngIf="candidate.address">
-              <a [routerLink]="['/address', candidate.address.id, 'view']">{{ candidate.address.id }}</a>
-            </div>
-          </td>
           <td class="text-end">
             <div class="btn-group">
               <button
@@ -110,7 +99,7 @@
                 data-cy="entityDetailsButton"
               >
                 <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                <span class="d-none d-md-inline">View</span>
               </button>
 
               <button
@@ -120,17 +109,35 @@
                 data-cy="entityEditButton"
               >
                 <fa-icon icon="pencil-alt"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                <span class="d-none d-md-inline">Edit</span>
               </button>
 
               <button type="submit" (click)="delete(candidate)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                 <fa-icon icon="times"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                <span class="d-none d-md-inline">Delete</span>
               </button>
             </div>
           </td>
         </tr>
       </tbody>
     </table>
+  </div>
+
+  <div *ngIf="candidates && candidates.length > 0">
+    <div class="d-flex justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [page]="page"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="navigateToPage($event)"
+      ></ngb-pagination>
+    </div>
   </div>
 </div>

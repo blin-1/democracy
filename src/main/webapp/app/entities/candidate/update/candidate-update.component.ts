@@ -15,8 +15,6 @@ import { EventManager, EventWithContent } from 'app/core/util/event-manager.serv
 import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
 import { IOffice } from 'app/entities/office/office.model';
 import { OfficeService } from 'app/entities/office/service/office.service';
-import { IAddress } from 'app/entities/address/address.model';
-import { AddressService } from 'app/entities/address/service/address.service';
 
 @Component({
   standalone: true,
@@ -29,7 +27,6 @@ export class CandidateUpdateComponent implements OnInit {
   candidate: ICandidate | null = null;
 
   officesSharedCollection: IOffice[] = [];
-  addressesCollection: IAddress[] = [];
 
   editForm: CandidateFormGroup = this.candidateFormService.createCandidateFormGroup();
 
@@ -39,14 +36,11 @@ export class CandidateUpdateComponent implements OnInit {
     protected candidateService: CandidateService,
     protected candidateFormService: CandidateFormService,
     protected officeService: OfficeService,
-    protected addressService: AddressService,
     protected elementRef: ElementRef,
     protected activatedRoute: ActivatedRoute
   ) {}
 
   compareOffice = (o1: IOffice | null, o2: IOffice | null): boolean => this.officeService.compareOffice(o1, o2);
-
-  compareAddress = (o1: IAddress | null, o2: IAddress | null): boolean => this.addressService.compareAddress(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ candidate }) => {
@@ -70,7 +64,7 @@ export class CandidateUpdateComponent implements OnInit {
   setFileData(event: Event, field: string, isImage: boolean): void {
     this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe({
       error: (err: FileLoadError) =>
-        this.eventManager.broadcast(new EventWithContent<AlertError>('democracyApp.error', { ...err, key: 'error.file.' + err.key })),
+        this.eventManager.broadcast(new EventWithContent<AlertError>('democracyApp.error', { message: err.message })),
     });
   }
 
@@ -125,7 +119,6 @@ export class CandidateUpdateComponent implements OnInit {
       this.officesSharedCollection,
       candidate.office
     );
-    this.addressesCollection = this.addressService.addAddressToCollectionIfMissing<IAddress>(this.addressesCollection, candidate.address);
   }
 
   protected loadRelationshipsOptions(): void {
@@ -134,13 +127,5 @@ export class CandidateUpdateComponent implements OnInit {
       .pipe(map((res: HttpResponse<IOffice[]>) => res.body ?? []))
       .pipe(map((offices: IOffice[]) => this.officeService.addOfficeToCollectionIfMissing<IOffice>(offices, this.candidate?.office)))
       .subscribe((offices: IOffice[]) => (this.officesSharedCollection = offices));
-
-    this.addressService
-      .query({ filter: 'candidate-is-null' })
-      .pipe(map((res: HttpResponse<IAddress[]>) => res.body ?? []))
-      .pipe(
-        map((addresses: IAddress[]) => this.addressService.addAddressToCollectionIfMissing<IAddress>(addresses, this.candidate?.address))
-      )
-      .subscribe((addresses: IAddress[]) => (this.addressesCollection = addresses));
   }
 }

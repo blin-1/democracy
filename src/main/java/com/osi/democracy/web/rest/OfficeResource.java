@@ -1,7 +1,8 @@
 package com.osi.democracy.web.rest;
 
-import com.osi.democracy.domain.Office;
 import com.osi.democracy.repository.OfficeRepository;
+import com.osi.democracy.service.OfficeService;
+import com.osi.democracy.service.dto.OfficeDTO;
 import com.osi.democracy.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -13,10 +14,14 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
 /**
@@ -24,7 +29,6 @@ import tech.jhipster.web.util.ResponseUtil;
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class OfficeResource {
 
     private final Logger log = LoggerFactory.getLogger(OfficeResource.class);
@@ -34,52 +38,55 @@ public class OfficeResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final OfficeService officeService;
+
     private final OfficeRepository officeRepository;
 
-    public OfficeResource(OfficeRepository officeRepository) {
+    public OfficeResource(OfficeService officeService, OfficeRepository officeRepository) {
+        this.officeService = officeService;
         this.officeRepository = officeRepository;
     }
 
     /**
      * {@code POST  /offices} : Create a new office.
      *
-     * @param office the office to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new office, or with status {@code 400 (Bad Request)} if the office has already an ID.
+     * @param officeDTO the officeDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new officeDTO, or with status {@code 400 (Bad Request)} if the office has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/offices")
-    public ResponseEntity<Office> createOffice(@Valid @RequestBody Office office) throws URISyntaxException {
-        log.debug("REST request to save Office : {}", office);
-        if (office.getId() != null) {
+    public ResponseEntity<OfficeDTO> createOffice(@Valid @RequestBody OfficeDTO officeDTO) throws URISyntaxException {
+        log.debug("REST request to save Office : {}", officeDTO);
+        if (officeDTO.getId() != null) {
             throw new BadRequestAlertException("A new office cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Office result = officeRepository.save(office);
+        OfficeDTO result = officeService.save(officeDTO);
         return ResponseEntity
             .created(new URI("/api/offices/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
     /**
      * {@code PUT  /offices/:id} : Updates an existing office.
      *
-     * @param id the id of the office to save.
-     * @param office the office to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated office,
-     * or with status {@code 400 (Bad Request)} if the office is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the office couldn't be updated.
+     * @param id the id of the officeDTO to save.
+     * @param officeDTO the officeDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated officeDTO,
+     * or with status {@code 400 (Bad Request)} if the officeDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the officeDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/offices/{id}")
-    public ResponseEntity<Office> updateOffice(
+    public ResponseEntity<OfficeDTO> updateOffice(
         @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody Office office
+        @Valid @RequestBody OfficeDTO officeDTO
     ) throws URISyntaxException {
-        log.debug("REST request to update Office : {}, {}", id, office);
-        if (office.getId() == null) {
+        log.debug("REST request to update Office : {}, {}", id, officeDTO);
+        if (officeDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, office.getId())) {
+        if (!Objects.equals(id, officeDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -87,34 +94,34 @@ public class OfficeResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Office result = officeRepository.save(office);
+        OfficeDTO result = officeService.update(officeDTO);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, office.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, officeDTO.getId().toString()))
             .body(result);
     }
 
     /**
      * {@code PATCH  /offices/:id} : Partial updates given fields of an existing office, field will ignore if it is null
      *
-     * @param id the id of the office to save.
-     * @param office the office to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated office,
-     * or with status {@code 400 (Bad Request)} if the office is not valid,
-     * or with status {@code 404 (Not Found)} if the office is not found,
-     * or with status {@code 500 (Internal Server Error)} if the office couldn't be updated.
+     * @param id the id of the officeDTO to save.
+     * @param officeDTO the officeDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated officeDTO,
+     * or with status {@code 400 (Bad Request)} if the officeDTO is not valid,
+     * or with status {@code 404 (Not Found)} if the officeDTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the officeDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/offices/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public ResponseEntity<Office> partialUpdateOffice(
+    public ResponseEntity<OfficeDTO> partialUpdateOffice(
         @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody Office office
+        @NotNull @RequestBody OfficeDTO officeDTO
     ) throws URISyntaxException {
-        log.debug("REST request to partial update Office partially : {}, {}", id, office);
-        if (office.getId() == null) {
+        log.debug("REST request to partial update Office partially : {}, {}", id, officeDTO);
+        if (officeDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, office.getId())) {
+        if (!Objects.equals(id, officeDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -122,66 +129,54 @@ public class OfficeResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Office> result = officeRepository
-            .findById(office.getId())
-            .map(existingOffice -> {
-                if (office.getState() != null) {
-                    existingOffice.setState(office.getState());
-                }
-                if (office.getMunicipality() != null) {
-                    existingOffice.setMunicipality(office.getMunicipality());
-                }
-                if (office.getFederal() != null) {
-                    existingOffice.setFederal(office.getFederal());
-                }
-
-                return existingOffice;
-            })
-            .map(officeRepository::save);
+        Optional<OfficeDTO> result = officeService.partialUpdate(officeDTO);
 
         return ResponseUtil.wrapOrNotFound(
             result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, office.getId().toString())
+            HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, officeDTO.getId().toString())
         );
     }
 
     /**
      * {@code GET  /offices} : get all the offices.
      *
+     * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of offices in body.
      */
     @GetMapping("/offices")
-    public List<Office> getAllOffices() {
-        log.debug("REST request to get all Offices");
-        return officeRepository.findAll();
+    public ResponseEntity<List<OfficeDTO>> getAllOffices(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+        log.debug("REST request to get a page of Offices");
+        Page<OfficeDTO> page = officeService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
      * {@code GET  /offices/:id} : get the "id" office.
      *
-     * @param id the id of the office to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the office, or with status {@code 404 (Not Found)}.
+     * @param id the id of the officeDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the officeDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/offices/{id}")
-    public ResponseEntity<Office> getOffice(@PathVariable Long id) {
+    public ResponseEntity<OfficeDTO> getOffice(@PathVariable Long id) {
         log.debug("REST request to get Office : {}", id);
-        Optional<Office> office = officeRepository.findById(id);
-        return ResponseUtil.wrapOrNotFound(office);
+        Optional<OfficeDTO> officeDTO = officeService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(officeDTO);
     }
 
     /**
      * {@code DELETE  /offices/:id} : delete the "id" office.
      *
-     * @param id the id of the office to delete.
+     * @param id the id of the officeDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/offices/{id}")
     public ResponseEntity<Void> deleteOffice(@PathVariable Long id) {
         log.debug("REST request to delete Office : {}", id);
-        officeRepository.deleteById(id);
+        officeService.delete(id);
         return ResponseEntity
             .noContent()
-            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
             .build();
     }
 }

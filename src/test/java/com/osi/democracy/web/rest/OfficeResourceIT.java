@@ -10,6 +10,8 @@ import com.osi.democracy.domain.Office;
 import com.osi.democracy.domain.enumeration.State;
 import com.osi.democracy.domain.enumeration.YesNo;
 import com.osi.democracy.repository.OfficeRepository;
+import com.osi.democracy.service.dto.OfficeDTO;
+import com.osi.democracy.service.mapper.OfficeMapper;
 import jakarta.persistence.EntityManager;
 import java.util.List;
 import java.util.Random;
@@ -48,6 +50,9 @@ class OfficeResourceIT {
 
     @Autowired
     private OfficeRepository officeRepository;
+
+    @Autowired
+    private OfficeMapper officeMapper;
 
     @Autowired
     private EntityManager em;
@@ -89,8 +94,9 @@ class OfficeResourceIT {
     void createOffice() throws Exception {
         int databaseSizeBeforeCreate = officeRepository.findAll().size();
         // Create the Office
+        OfficeDTO officeDTO = officeMapper.toDto(office);
         restOfficeMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(office)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(officeDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Office in the database
@@ -107,12 +113,13 @@ class OfficeResourceIT {
     void createOfficeWithExistingId() throws Exception {
         // Create the Office with an existing ID
         office.setId(1L);
+        OfficeDTO officeDTO = officeMapper.toDto(office);
 
         int databaseSizeBeforeCreate = officeRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restOfficeMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(office)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(officeDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Office in the database
@@ -174,12 +181,13 @@ class OfficeResourceIT {
         // Disconnect from session so that the updates on updatedOffice are not directly saved in db
         em.detach(updatedOffice);
         updatedOffice.state(UPDATED_STATE).municipality(UPDATED_MUNICIPALITY).federal(UPDATED_FEDERAL);
+        OfficeDTO officeDTO = officeMapper.toDto(updatedOffice);
 
         restOfficeMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, updatedOffice.getId())
+                put(ENTITY_API_URL_ID, officeDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(updatedOffice))
+                    .content(TestUtil.convertObjectToJsonBytes(officeDTO))
             )
             .andExpect(status().isOk());
 
@@ -198,12 +206,15 @@ class OfficeResourceIT {
         int databaseSizeBeforeUpdate = officeRepository.findAll().size();
         office.setId(count.incrementAndGet());
 
+        // Create the Office
+        OfficeDTO officeDTO = officeMapper.toDto(office);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restOfficeMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, office.getId())
+                put(ENTITY_API_URL_ID, officeDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(office))
+                    .content(TestUtil.convertObjectToJsonBytes(officeDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -218,12 +229,15 @@ class OfficeResourceIT {
         int databaseSizeBeforeUpdate = officeRepository.findAll().size();
         office.setId(count.incrementAndGet());
 
+        // Create the Office
+        OfficeDTO officeDTO = officeMapper.toDto(office);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restOfficeMockMvc
             .perform(
                 put(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(office))
+                    .content(TestUtil.convertObjectToJsonBytes(officeDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -238,9 +252,12 @@ class OfficeResourceIT {
         int databaseSizeBeforeUpdate = officeRepository.findAll().size();
         office.setId(count.incrementAndGet());
 
+        // Create the Office
+        OfficeDTO officeDTO = officeMapper.toDto(office);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restOfficeMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(office)))
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(officeDTO)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Office in the database
@@ -316,12 +333,15 @@ class OfficeResourceIT {
         int databaseSizeBeforeUpdate = officeRepository.findAll().size();
         office.setId(count.incrementAndGet());
 
+        // Create the Office
+        OfficeDTO officeDTO = officeMapper.toDto(office);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restOfficeMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, office.getId())
+                patch(ENTITY_API_URL_ID, officeDTO.getId())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(office))
+                    .content(TestUtil.convertObjectToJsonBytes(officeDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -336,12 +356,15 @@ class OfficeResourceIT {
         int databaseSizeBeforeUpdate = officeRepository.findAll().size();
         office.setId(count.incrementAndGet());
 
+        // Create the Office
+        OfficeDTO officeDTO = officeMapper.toDto(office);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restOfficeMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(office))
+                    .content(TestUtil.convertObjectToJsonBytes(officeDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -356,9 +379,14 @@ class OfficeResourceIT {
         int databaseSizeBeforeUpdate = officeRepository.findAll().size();
         office.setId(count.incrementAndGet());
 
+        // Create the Office
+        OfficeDTO officeDTO = officeMapper.toDto(office);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restOfficeMockMvc
-            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(office)))
+            .perform(
+                patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(officeDTO))
+            )
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Office in the database

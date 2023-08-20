@@ -8,6 +8,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.osi.democracy.IntegrationTest;
 import com.osi.democracy.domain.Issue;
 import com.osi.democracy.repository.IssueRepository;
+import com.osi.democracy.service.dto.IssueDTO;
+import com.osi.democracy.service.mapper.IssueMapper;
 import jakarta.persistence.EntityManager;
 import java.util.List;
 import java.util.Random;
@@ -43,6 +45,9 @@ class IssueResourceIT {
 
     @Autowired
     private IssueRepository issueRepository;
+
+    @Autowired
+    private IssueMapper issueMapper;
 
     @Autowired
     private EntityManager em;
@@ -84,8 +89,9 @@ class IssueResourceIT {
     void createIssue() throws Exception {
         int databaseSizeBeforeCreate = issueRepository.findAll().size();
         // Create the Issue
+        IssueDTO issueDTO = issueMapper.toDto(issue);
         restIssueMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(issue)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(issueDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Issue in the database
@@ -101,12 +107,13 @@ class IssueResourceIT {
     void createIssueWithExistingId() throws Exception {
         // Create the Issue with an existing ID
         issue.setId(1L);
+        IssueDTO issueDTO = issueMapper.toDto(issue);
 
         int databaseSizeBeforeCreate = issueRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restIssueMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(issue)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(issueDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Issue in the database
@@ -122,9 +129,10 @@ class IssueResourceIT {
         issue.setName(null);
 
         // Create the Issue, which fails.
+        IssueDTO issueDTO = issueMapper.toDto(issue);
 
         restIssueMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(issue)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(issueDTO)))
             .andExpect(status().isBadRequest());
 
         List<Issue> issueList = issueRepository.findAll();
@@ -183,12 +191,13 @@ class IssueResourceIT {
         // Disconnect from session so that the updates on updatedIssue are not directly saved in db
         em.detach(updatedIssue);
         updatedIssue.name(UPDATED_NAME).description(UPDATED_DESCRIPTION);
+        IssueDTO issueDTO = issueMapper.toDto(updatedIssue);
 
         restIssueMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, updatedIssue.getId())
+                put(ENTITY_API_URL_ID, issueDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(updatedIssue))
+                    .content(TestUtil.convertObjectToJsonBytes(issueDTO))
             )
             .andExpect(status().isOk());
 
@@ -206,12 +215,15 @@ class IssueResourceIT {
         int databaseSizeBeforeUpdate = issueRepository.findAll().size();
         issue.setId(count.incrementAndGet());
 
+        // Create the Issue
+        IssueDTO issueDTO = issueMapper.toDto(issue);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restIssueMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, issue.getId())
+                put(ENTITY_API_URL_ID, issueDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(issue))
+                    .content(TestUtil.convertObjectToJsonBytes(issueDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -226,12 +238,15 @@ class IssueResourceIT {
         int databaseSizeBeforeUpdate = issueRepository.findAll().size();
         issue.setId(count.incrementAndGet());
 
+        // Create the Issue
+        IssueDTO issueDTO = issueMapper.toDto(issue);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restIssueMockMvc
             .perform(
                 put(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(issue))
+                    .content(TestUtil.convertObjectToJsonBytes(issueDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -246,9 +261,12 @@ class IssueResourceIT {
         int databaseSizeBeforeUpdate = issueRepository.findAll().size();
         issue.setId(count.incrementAndGet());
 
+        // Create the Issue
+        IssueDTO issueDTO = issueMapper.toDto(issue);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restIssueMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(issue)))
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(issueDTO)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Issue in the database
@@ -320,12 +338,15 @@ class IssueResourceIT {
         int databaseSizeBeforeUpdate = issueRepository.findAll().size();
         issue.setId(count.incrementAndGet());
 
+        // Create the Issue
+        IssueDTO issueDTO = issueMapper.toDto(issue);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restIssueMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, issue.getId())
+                patch(ENTITY_API_URL_ID, issueDTO.getId())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(issue))
+                    .content(TestUtil.convertObjectToJsonBytes(issueDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -340,12 +361,15 @@ class IssueResourceIT {
         int databaseSizeBeforeUpdate = issueRepository.findAll().size();
         issue.setId(count.incrementAndGet());
 
+        // Create the Issue
+        IssueDTO issueDTO = issueMapper.toDto(issue);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restIssueMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(issue))
+                    .content(TestUtil.convertObjectToJsonBytes(issueDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -360,9 +384,12 @@ class IssueResourceIT {
         int databaseSizeBeforeUpdate = issueRepository.findAll().size();
         issue.setId(count.incrementAndGet());
 
+        // Create the Issue
+        IssueDTO issueDTO = issueMapper.toDto(issue);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restIssueMockMvc
-            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(issue)))
+            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(issueDTO)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Issue in the database

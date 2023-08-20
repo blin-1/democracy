@@ -4,26 +4,13 @@ export const EntityNavbarItems: NavbarItem[] = [
   {
     name: 'Candidate',
     route: '/candidate',
-    translationKey: 'global.menu.entities.candidate',
-  },
-  {
-    name: 'Address',
-    route: '/address',
-    translationKey: 'global.menu.entities.address',
-  },
-  {
-    name: 'Issue',
-    route: '/issue',
-    translationKey: 'global.menu.entities.issue',
-  },
-  {
-    name: 'Position',
-    route: '/position',
-    translationKey: 'global.menu.entities.position',
   },
   {
     name: 'Office',
     route: '/office',
-    translationKey: 'global.menu.entities.office',
+  },
+  {
+    name: 'Issue',
+    route: '/issue',
   },
 ];

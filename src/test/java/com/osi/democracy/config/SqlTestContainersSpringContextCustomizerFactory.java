@@ -28,7 +28,7 @@ public class SqlTestContainersSpringContextCustomizerFactory implements ContextC
                 if (null == prodTestContainer) {
                     try {
                         Class<? extends SqlTestContainer> containerClass = (Class<? extends SqlTestContainer>) Class.forName(
-                            this.getClass().getPackageName() + ".MariadbTestContainer"
+                            this.getClass().getPackageName() + ".MysqlTestContainer"
                         );
                         prodTestContainer = beanFactory.createBean(containerClass);
                         beanFactory.registerSingleton(containerClass.getName(), prodTestContainer);
@@ -41,7 +41,7 @@ public class SqlTestContainersSpringContextCustomizerFactory implements ContextC
                     testValues.and(
                         "spring.datasource.url=" +
                         prodTestContainer.getTestContainer().getJdbcUrl() +
-                        "?useLegacyDatetimeCode=false&serverTimezone=UTC"
+                        "?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true"
                     );
                 testValues = testValues.and("spring.datasource.username=" + prodTestContainer.getTestContainer().getUsername());
                 testValues = testValues.and("spring.datasource.password=" + prodTestContainer.getTestContainer().getPassword());

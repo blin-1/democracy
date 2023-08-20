@@ -18,7 +18,7 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access.service'
         {
           path: '',
           component: HomeComponent,
-          title: 'home.title',
+          title: 'Welcome, Java Hipster!',
         },
         {
           path: '',
@@ -40,7 +40,7 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access.service'
         {
           path: 'login',
           component: LoginComponent,
-          title: 'login.title',
+          title: 'Sign in',
         },
         {
           path: '',

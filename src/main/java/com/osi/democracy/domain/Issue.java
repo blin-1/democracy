@@ -19,8 +19,7 @@ public class Issue implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -34,7 +33,7 @@ public class Issue implements Serializable {
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "issues", "office", "address" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "issues", "office" }, allowSetters = true)
     private Candidate candidate;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

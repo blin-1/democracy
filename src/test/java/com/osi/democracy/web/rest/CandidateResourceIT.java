@@ -8,6 +8,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.osi.democracy.IntegrationTest;
 import com.osi.democracy.domain.Candidate;
 import com.osi.democracy.repository.CandidateRepository;
+import com.osi.democracy.service.dto.CandidateDTO;
+import com.osi.democracy.service.mapper.CandidateMapper;
 import jakarta.persistence.EntityManager;
 import java.util.List;
 import java.util.Random;
@@ -52,6 +54,9 @@ class CandidateResourceIT {
 
     @Autowired
     private CandidateRepository candidateRepository;
+
+    @Autowired
+    private CandidateMapper candidateMapper;
 
     @Autowired
     private EntityManager em;
@@ -103,8 +108,9 @@ class CandidateResourceIT {
     void createCandidate() throws Exception {
         int databaseSizeBeforeCreate = candidateRepository.findAll().size();
         // Create the Candidate
+        CandidateDTO candidateDTO = candidateMapper.toDto(candidate);
         restCandidateMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(candidate)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(candidateDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Candidate in the database
@@ -123,12 +129,13 @@ class CandidateResourceIT {
     void createCandidateWithExistingId() throws Exception {
         // Create the Candidate with an existing ID
         candidate.setId(1L);
+        CandidateDTO candidateDTO = candidateMapper.toDto(candidate);
 
         int databaseSizeBeforeCreate = candidateRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restCandidateMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(candidate)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(candidateDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Candidate in the database
@@ -144,9 +151,10 @@ class CandidateResourceIT {
         candidate.setFirstName(null);
 
         // Create the Candidate, which fails.
+        CandidateDTO candidateDTO = candidateMapper.toDto(candidate);
 
         restCandidateMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(candidate)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(candidateDTO)))
             .andExpect(status().isBadRequest());
 
         List<Candidate> candidateList = candidateRepository.findAll();
@@ -161,9 +169,10 @@ class CandidateResourceIT {
         candidate.setLastName(null);
 
         // Create the Candidate, which fails.
+        CandidateDTO candidateDTO = candidateMapper.toDto(candidate);
 
         restCandidateMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(candidate)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(candidateDTO)))
             .andExpect(status().isBadRequest());
 
         List<Candidate> candidateList = candidateRepository.findAll();
@@ -178,9 +187,10 @@ class CandidateResourceIT {
         candidate.setEmail(null);
 
         // Create the Candidate, which fails.
+        CandidateDTO candidateDTO = candidateMapper.toDto(candidate);
 
         restCandidateMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(candidate)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(candidateDTO)))
             .andExpect(status().isBadRequest());
 
         List<Candidate> candidateList = candidateRepository.findAll();
@@ -250,12 +260,13 @@ class CandidateResourceIT {
             .email(UPDATED_EMAIL)
             .pic(UPDATED_PIC)
             .picContentType(UPDATED_PIC_CONTENT_TYPE);
+        CandidateDTO candidateDTO = candidateMapper.toDto(updatedCandidate);
 
         restCandidateMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, updatedCandidate.getId())
+                put(ENTITY_API_URL_ID, candidateDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(updatedCandidate))
+                    .content(TestUtil.convertObjectToJsonBytes(candidateDTO))
             )
             .andExpect(status().isOk());
 
@@ -276,12 +287,15 @@ class CandidateResourceIT {
         int databaseSizeBeforeUpdate = candidateRepository.findAll().size();
         candidate.setId(count.incrementAndGet());
 
+        // Create the Candidate
+        CandidateDTO candidateDTO = candidateMapper.toDto(candidate);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restCandidateMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, candidate.getId())
+                put(ENTITY_API_URL_ID, candidateDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(candidate))
+                    .content(TestUtil.convertObjectToJsonBytes(candidateDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -296,12 +310,15 @@ class CandidateResourceIT {
         int databaseSizeBeforeUpdate = candidateRepository.findAll().size();
         candidate.setId(count.incrementAndGet());
 
+        // Create the Candidate
+        CandidateDTO candidateDTO = candidateMapper.toDto(candidate);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restCandidateMockMvc
             .perform(
                 put(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(candidate))
+                    .content(TestUtil.convertObjectToJsonBytes(candidateDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -316,9 +333,12 @@ class CandidateResourceIT {
         int databaseSizeBeforeUpdate = candidateRepository.findAll().size();
         candidate.setId(count.incrementAndGet());
 
+        // Create the Candidate
+        CandidateDTO candidateDTO = candidateMapper.toDto(candidate);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restCandidateMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(candidate)))
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(candidateDTO)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Candidate in the database
@@ -403,12 +423,15 @@ class CandidateResourceIT {
         int databaseSizeBeforeUpdate = candidateRepository.findAll().size();
         candidate.setId(count.incrementAndGet());
 
+        // Create the Candidate
+        CandidateDTO candidateDTO = candidateMapper.toDto(candidate);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restCandidateMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, candidate.getId())
+                patch(ENTITY_API_URL_ID, candidateDTO.getId())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(candidate))
+                    .content(TestUtil.convertObjectToJsonBytes(candidateDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -423,12 +446,15 @@ class CandidateResourceIT {
         int databaseSizeBeforeUpdate = candidateRepository.findAll().size();
         candidate.setId(count.incrementAndGet());
 
+        // Create the Candidate
+        CandidateDTO candidateDTO = candidateMapper.toDto(candidate);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restCandidateMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(candidate))
+                    .content(TestUtil.convertObjectToJsonBytes(candidateDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -443,10 +469,13 @@ class CandidateResourceIT {
         int databaseSizeBeforeUpdate = candidateRepository.findAll().size();
         candidate.setId(count.incrementAndGet());
 
+        // Create the Candidate
+        CandidateDTO candidateDTO = candidateMapper.toDto(candidate);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restCandidateMockMvc
             .perform(
-                patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(candidate))
+                patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(candidateDTO))
             )
             .andExpect(status().isMethodNotAllowed());
 

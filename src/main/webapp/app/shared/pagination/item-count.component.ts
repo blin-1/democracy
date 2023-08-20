@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import TranslateDirective from '../language/translate.directive';
 
 /**
  * A component that will take care of item count statistics of a pagination.
@@ -7,8 +6,7 @@ import TranslateDirective from '../language/translate.directive';
 @Component({
   standalone: true,
   selector: 'jhi-item-count',
-  template: ` <div jhiTranslate="global.item-count" [translateValues]="{ first: first, second: second, total: total }"></div> `,
-  imports: [TranslateDirective],
+  template: ` <div>Showing {{ first }} - {{ second }} of {{ total }} items.</div> `,
 })
 export default class ItemCountComponent {
   /**

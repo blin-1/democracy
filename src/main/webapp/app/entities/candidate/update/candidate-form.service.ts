@@ -24,7 +24,6 @@ type CandidateFormGroupContent = {
   pic: FormControl<ICandidate['pic']>;
   picContentType: FormControl<ICandidate['picContentType']>;
   office: FormControl<ICandidate['office']>;
-  address: FormControl<ICandidate['address']>;
 };
 
 export type CandidateFormGroup = FormGroup<CandidateFormGroupContent>;
@@ -58,7 +57,6 @@ export class CandidateFormService {
       }),
       picContentType: new FormControl(candidateRawValue.picContentType),
       office: new FormControl(candidateRawValue.office),
-      address: new FormControl(candidateRawValue.address),
     });
   }
 

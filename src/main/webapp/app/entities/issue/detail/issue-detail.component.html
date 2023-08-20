@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-center">
   <div class="col-8">
     <div *ngIf="issue">
-      <h2 data-cy="issueDetailsHeading"><span jhiTranslate="democracyApp.issue.detail.title">Issue</span></h2>
+      <h2 data-cy="issueDetailsHeading"><span>Issue</span></h2>
 
       <hr />
 
@@ -10,19 +10,19 @@
       <jhi-alert></jhi-alert>
 
       <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dt><span>ID</span></dt>
         <dd>
           <span>{{ issue.id }}</span>
         </dd>
-        <dt><span jhiTranslate="democracyApp.issue.name">Name</span></dt>
+        <dt><span>Name</span></dt>
         <dd>
           <span>{{ issue.name }}</span>
         </dd>
-        <dt><span jhiTranslate="democracyApp.issue.description">Description</span></dt>
+        <dt><span>Description</span></dt>
         <dd>
           <span>{{ issue.description }}</span>
         </dd>
-        <dt><span jhiTranslate="democracyApp.issue.candidate">Candidate</span></dt>
+        <dt><span>Candidate</span></dt>
         <dd>
           <div *ngIf="issue.candidate">
             <a [routerLink]="['/candidate', issue.candidate.id, 'view']">{{ issue.candidate.id }}</a>
@@ -31,11 +31,11 @@
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
       </button>
 
       <button type="button" [routerLink]="['/issue', issue.id, 'edit']" class="btn btn-primary">
-        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
       </button>
     </div>
   </div>
