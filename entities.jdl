@@ -14,34 +14,39 @@ application {
   entities * 
 }
 
-entity Candidate       (candidates) {
-   //id             Bigint      required unique
+entity Candidate  (candidates) {
    firstName      String	  required maxlength(128)
    lastName       String      required maxlength(128)
    email          String      required unique
+   party          Party       required
    pic            ImageBlob   required
+   bio            TextBlob    required
 }
 
 entity Office (offices) {
-	state State 
+	name         String   maxlength (128)
 	municipality String	  maxlength(128)
-	federal      YesNo
+	state        State
+	electionDate Date 
+}
+
+entity Position (statements) {
+    statement    TextBlob    required
 }
 
 entity Issue  (issues) {
-   //id             Bigint      required unique
-   name           String      required unique maxlength(128)
-   description    TextBlob    required 
+   name          String      required unique maxlength(128)
+   description   TextBlob    required 
 }
 
 relationship OneToMany {
-  Candidate to Issue
-  Office to Candidate
+  Candidate to Position
+  Office to Candidate {office}
 }
 
-//relationship ManyToOne {
-//  Inventory{id} to Strain{id}
-//}
+relationship ManyToOne {
+  Position{issue} to Issue
+}
 
 enum State {
   AL (Alabama)
@@ -52,6 +57,13 @@ enum State {
 enum YesNo {
   Y (Yes)
   N (No)
+}  
+
+enum Party {
+  R (Republican)
+  D (Democrat)
+  I (Independent)
+  U (Unaffiliated)
 }  
 
 dto * with mapstruct
