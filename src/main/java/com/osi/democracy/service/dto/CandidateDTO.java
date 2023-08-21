@@ -1,5 +1,6 @@
 package com.osi.democracy.service.dto;
 
+import com.osi.democracy.domain.enumeration.Party;
 import jakarta.persistence.Lob;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -24,10 +25,17 @@ public class CandidateDTO implements Serializable {
     @NotNull
     private String email;
 
+    @NotNull
+    private Party party;
+
     @Lob
     private byte[] pic;
 
     private String picContentType;
+
+    @Lob
+    private String bio;
+
     private OfficeDTO office;
 
     public Long getId() {
@@ -62,6 +70,14 @@ public class CandidateDTO implements Serializable {
         this.email = email;
     }
 
+    public Party getParty() {
+        return party;
+    }
+
+    public void setParty(Party party) {
+        this.party = party;
+    }
+
     public byte[] getPic() {
         return pic;
     }
@@ -76,6 +92,14 @@ public class CandidateDTO implements Serializable {
 
     public void setPicContentType(String picContentType) {
         this.picContentType = picContentType;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 
     public OfficeDTO getOffice() {
@@ -115,7 +139,9 @@ public class CandidateDTO implements Serializable {
             ", firstName='" + getFirstName() + "'" +
             ", lastName='" + getLastName() + "'" +
             ", email='" + getEmail() + "'" +
+            ", party='" + getParty() + "'" +
             ", pic='" + getPic() + "'" +
+            ", bio='" + getBio() + "'" +
             ", office=" + getOffice() +
             "}";
     }

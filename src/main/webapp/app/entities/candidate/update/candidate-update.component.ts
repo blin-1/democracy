@@ -15,6 +15,7 @@ import { EventManager, EventWithContent } from 'app/core/util/event-manager.serv
 import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
 import { IOffice } from 'app/entities/office/office.model';
 import { OfficeService } from 'app/entities/office/service/office.service';
+import { Party } from 'app/entities/enumerations/party.model';
 
 @Component({
   standalone: true,
@@ -25,6 +26,7 @@ import { OfficeService } from 'app/entities/office/service/office.service';
 export class CandidateUpdateComponent implements OnInit {
   isSaving = false;
   candidate: ICandidate | null = null;
+  partyValues = Object.keys(Party);
 
   officesSharedCollection: IOffice[] = [];
 

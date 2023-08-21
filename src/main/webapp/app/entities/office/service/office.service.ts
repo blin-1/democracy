@@ -2,12 +2,26 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+import { map } from 'rxjs/operators';
+
+import dayjs from 'dayjs/esm';
+
 import { isPresent } from 'app/core/util/operators';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IOffice, NewOffice } from '../office.model';
 
 export type PartialUpdateOffice = Partial<IOffice> & Pick<IOffice, 'id'>;
+
+type RestOf<T extends IOffice | NewOffice> = Omit<T, 'electionDate'> & {
+  electionDate?: string | null;
+};
+
+export type RestOffice = RestOf<IOffice>;
+
+export type NewRestOffice = RestOf<NewOffice>;
+
+export type PartialUpdateRestOffice = RestOf<PartialUpdateOffice>;
 
 export type EntityResponseType = HttpResponse<IOffice>;
 export type EntityArrayResponseType = HttpResponse<IOffice[]>;
@@ -19,24 +33,37 @@ export class OfficeService {
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(office: NewOffice): Observable<EntityResponseType> {
-    return this.http.post<IOffice>(this.resourceUrl, office, { observe: 'response' });
+    const copy = this.convertDateFromClient(office);
+    return this.http
+      .post<RestOffice>(this.resourceUrl, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   update(office: IOffice): Observable<EntityResponseType> {
-    return this.http.put<IOffice>(`${this.resourceUrl}/${this.getOfficeIdentifier(office)}`, office, { observe: 'response' });
+    const copy = this.convertDateFromClient(office);
+    return this.http
+      .put<RestOffice>(`${this.resourceUrl}/${this.getOfficeIdentifier(office)}`, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   partialUpdate(office: PartialUpdateOffice): Observable<EntityResponseType> {
-    return this.http.patch<IOffice>(`${this.resourceUrl}/${this.getOfficeIdentifier(office)}`, office, { observe: 'response' });
+    const copy = this.convertDateFromClient(office);
+    return this.http
+      .patch<RestOffice>(`${this.resourceUrl}/${this.getOfficeIdentifier(office)}`, copy, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   find(id: number): Observable<EntityResponseType> {
-    return this.http.get<IOffice>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+    return this.http
+      .get<RestOffice>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+      .pipe(map(res => this.convertResponseFromServer(res)));
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<IOffice[]>(this.resourceUrl, { params: options, observe: 'response' });
+    return this.http
+      .get<RestOffice[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .pipe(map(res => this.convertResponseArrayFromServer(res)));
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {
@@ -69,5 +96,31 @@ export class OfficeService {
       return [...officesToAdd, ...officeCollection];
     }
     return officeCollection;
+  }
+
+  protected convertDateFromClient<T extends IOffice | NewOffice | PartialUpdateOffice>(office: T): RestOf<T> {
+    return {
+      ...office,
+      electionDate: office.electionDate?.toJSON() ?? null,
+    };
+  }
+
+  protected convertDateFromServer(restOffice: RestOffice): IOffice {
+    return {
+      ...restOffice,
+      electionDate: restOffice.electionDate ? dayjs(restOffice.electionDate) : undefined,
+    };
+  }
+
+  protected convertResponseFromServer(res: HttpResponse<RestOffice>): HttpResponse<IOffice> {
+    return res.clone({
+      body: res.body ? this.convertDateFromServer(res.body) : null,
+    });
+  }
+
+  protected convertResponseArrayFromServer(res: HttpResponse<RestOffice[]>): HttpResponse<IOffice[]> {
+    return res.clone({
+      body: res.body ? res.body.map(item => this.convertDateFromServer(item)) : null,
+    });
   }
 }

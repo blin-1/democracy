@@ -49,10 +49,11 @@ public class CacheConfiguration {
             createCache(cm, com.osi.democracy.domain.Authority.class.getName());
             createCache(cm, com.osi.democracy.domain.User.class.getName() + ".authorities");
             createCache(cm, com.osi.democracy.domain.Candidate.class.getName());
-            createCache(cm, com.osi.democracy.domain.Candidate.class.getName() + ".issues");
+            createCache(cm, com.osi.democracy.domain.Candidate.class.getName() + ".positions");
             createCache(cm, com.osi.democracy.domain.Office.class.getName());
             createCache(cm, com.osi.democracy.domain.Office.class.getName() + ".candidates");
             createCache(cm, com.osi.democracy.domain.Issue.class.getName());
+            createCache(cm, com.osi.democracy.domain.Position.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

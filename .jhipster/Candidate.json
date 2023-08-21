@@ -22,9 +22,21 @@
       "fieldValidateRules": ["required", "unique"]
     },
     {
+      "fieldName": "party",
+      "fieldType": "Party",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "R (Republican),D (Democrat),I (Independent),U (Unaffiliated)"
+    },
+    {
       "fieldName": "pic",
       "fieldType": "byte[]",
       "fieldTypeBlobContent": "image",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "bio",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text",
       "fieldValidateRules": ["required"]
     }
   ],
@@ -32,15 +44,14 @@
   "pagination": "pagination",
   "relationships": [
     {
-      "otherEntityName": "issue",
+      "otherEntityName": "position",
       "otherEntityRelationshipName": "candidate",
-      "relationshipName": "issue",
+      "relationshipName": "position",
       "relationshipSide": "left",
       "relationshipType": "one-to-many"
     },
     {
       "otherEntityName": "office",
-      "otherEntityRelationshipName": "candidate",
       "relationshipName": "office",
       "relationshipSide": "right",
       "relationshipType": "many-to-one"

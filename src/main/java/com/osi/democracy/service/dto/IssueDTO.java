@@ -20,8 +20,6 @@ public class IssueDTO implements Serializable {
     @Lob
     private String description;
 
-    private CandidateDTO candidate;
-
     public Long getId() {
         return id;
     }
@@ -44,14 +42,6 @@ public class IssueDTO implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public CandidateDTO getCandidate() {
-        return candidate;
-    }
-
-    public void setCandidate(CandidateDTO candidate) {
-        this.candidate = candidate;
     }
 
     @Override
@@ -82,7 +72,6 @@ public class IssueDTO implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
-            ", candidate=" + getCandidate() +
             "}";
     }
 }

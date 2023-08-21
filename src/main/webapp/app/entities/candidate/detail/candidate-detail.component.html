@@ -26,6 +26,10 @@
         <dd>
           <span>{{ candidate.email }}</span>
         </dd>
+        <dt><span>Party</span></dt>
+        <dd>
+          <span>{{ candidate.party }}</span>
+        </dd>
         <dt><span>Pic</span></dt>
         <dd>
           <div *ngIf="candidate.pic">
@@ -34,6 +38,10 @@
             </a>
             {{ candidate.picContentType }}, {{ byteSize(candidate.pic) }}
           </div>
+        </dd>
+        <dt><span>Bio</span></dt>
+        <dd>
+          <span>{{ candidate.bio }}</span>
         </dd>
         <dt><span>Office</span></dt>
         <dd>

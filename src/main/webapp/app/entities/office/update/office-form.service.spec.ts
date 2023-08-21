@@ -20,9 +20,10 @@ describe('Office Form Service', () => {
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
             id: expect.any(Object),
-            state: expect.any(Object),
+            name: expect.any(Object),
             municipality: expect.any(Object),
-            federal: expect.any(Object),
+            state: expect.any(Object),
+            electionDate: expect.any(Object),
           })
         );
       });
@@ -33,9 +34,10 @@ describe('Office Form Service', () => {
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
             id: expect.any(Object),
-            state: expect.any(Object),
+            name: expect.any(Object),
             municipality: expect.any(Object),
-            federal: expect.any(Object),
+            state: expect.any(Object),
+            electionDate: expect.any(Object),
           })
         );
       });

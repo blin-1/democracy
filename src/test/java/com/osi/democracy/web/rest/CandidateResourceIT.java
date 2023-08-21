@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.osi.democracy.IntegrationTest;
 import com.osi.democracy.domain.Candidate;
+import com.osi.democracy.domain.enumeration.Party;
 import com.osi.democracy.repository.CandidateRepository;
 import com.osi.democracy.service.dto.CandidateDTO;
 import com.osi.democracy.service.mapper.CandidateMapper;
@@ -41,10 +42,16 @@ class CandidateResourceIT {
     private static final String DEFAULT_EMAIL = "AAAAAAAAAA";
     private static final String UPDATED_EMAIL = "BBBBBBBBBB";
 
+    private static final Party DEFAULT_PARTY = Party.R;
+    private static final Party UPDATED_PARTY = Party.D;
+
     private static final byte[] DEFAULT_PIC = TestUtil.createByteArray(1, "0");
     private static final byte[] UPDATED_PIC = TestUtil.createByteArray(1, "1");
     private static final String DEFAULT_PIC_CONTENT_TYPE = "image/jpg";
     private static final String UPDATED_PIC_CONTENT_TYPE = "image/png";
+
+    private static final String DEFAULT_BIO = "AAAAAAAAAA";
+    private static final String UPDATED_BIO = "BBBBBBBBBB";
 
     private static final String ENTITY_API_URL = "/api/candidates";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -77,8 +84,10 @@ class CandidateResourceIT {
             .firstName(DEFAULT_FIRST_NAME)
             .lastName(DEFAULT_LAST_NAME)
             .email(DEFAULT_EMAIL)
+            .party(DEFAULT_PARTY)
             .pic(DEFAULT_PIC)
-            .picContentType(DEFAULT_PIC_CONTENT_TYPE);
+            .picContentType(DEFAULT_PIC_CONTENT_TYPE)
+            .bio(DEFAULT_BIO);
         return candidate;
     }
 
@@ -93,8 +102,10 @@ class CandidateResourceIT {
             .firstName(UPDATED_FIRST_NAME)
             .lastName(UPDATED_LAST_NAME)
             .email(UPDATED_EMAIL)
+            .party(UPDATED_PARTY)
             .pic(UPDATED_PIC)
-            .picContentType(UPDATED_PIC_CONTENT_TYPE);
+            .picContentType(UPDATED_PIC_CONTENT_TYPE)
+            .bio(UPDATED_BIO);
         return candidate;
     }
 
@@ -120,8 +131,10 @@ class CandidateResourceIT {
         assertThat(testCandidate.getFirstName()).isEqualTo(DEFAULT_FIRST_NAME);
         assertThat(testCandidate.getLastName()).isEqualTo(DEFAULT_LAST_NAME);
         assertThat(testCandidate.getEmail()).isEqualTo(DEFAULT_EMAIL);
+        assertThat(testCandidate.getParty()).isEqualTo(DEFAULT_PARTY);
         assertThat(testCandidate.getPic()).isEqualTo(DEFAULT_PIC);
         assertThat(testCandidate.getPicContentType()).isEqualTo(DEFAULT_PIC_CONTENT_TYPE);
+        assertThat(testCandidate.getBio()).isEqualTo(DEFAULT_BIO);
     }
 
     @Test
@@ -199,6 +212,24 @@ class CandidateResourceIT {
 
     @Test
     @Transactional
+    void checkPartyIsRequired() throws Exception {
+        int databaseSizeBeforeTest = candidateRepository.findAll().size();
+        // set the field null
+        candidate.setParty(null);
+
+        // Create the Candidate, which fails.
+        CandidateDTO candidateDTO = candidateMapper.toDto(candidate);
+
+        restCandidateMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(candidateDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Candidate> candidateList = candidateRepository.findAll();
+        assertThat(candidateList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void getAllCandidates() throws Exception {
         // Initialize the database
         candidateRepository.saveAndFlush(candidate);
@@ -212,8 +243,10 @@ class CandidateResourceIT {
             .andExpect(jsonPath("$.[*].firstName").value(hasItem(DEFAULT_FIRST_NAME)))
             .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME)))
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
+            .andExpect(jsonPath("$.[*].party").value(hasItem(DEFAULT_PARTY.toString())))
             .andExpect(jsonPath("$.[*].picContentType").value(hasItem(DEFAULT_PIC_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].pic").value(hasItem(Base64Utils.encodeToString(DEFAULT_PIC))));
+            .andExpect(jsonPath("$.[*].pic").value(hasItem(Base64Utils.encodeToString(DEFAULT_PIC))))
+            .andExpect(jsonPath("$.[*].bio").value(hasItem(DEFAULT_BIO.toString())));
     }
 
     @Test
@@ -231,8 +264,10 @@ class CandidateResourceIT {
             .andExpect(jsonPath("$.firstName").value(DEFAULT_FIRST_NAME))
             .andExpect(jsonPath("$.lastName").value(DEFAULT_LAST_NAME))
             .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL))
+            .andExpect(jsonPath("$.party").value(DEFAULT_PARTY.toString()))
             .andExpect(jsonPath("$.picContentType").value(DEFAULT_PIC_CONTENT_TYPE))
-            .andExpect(jsonPath("$.pic").value(Base64Utils.encodeToString(DEFAULT_PIC)));
+            .andExpect(jsonPath("$.pic").value(Base64Utils.encodeToString(DEFAULT_PIC)))
+            .andExpect(jsonPath("$.bio").value(DEFAULT_BIO.toString()));
     }
 
     @Test
@@ -258,8 +293,10 @@ class CandidateResourceIT {
             .firstName(UPDATED_FIRST_NAME)
             .lastName(UPDATED_LAST_NAME)
             .email(UPDATED_EMAIL)
+            .party(UPDATED_PARTY)
             .pic(UPDATED_PIC)
-            .picContentType(UPDATED_PIC_CONTENT_TYPE);
+            .picContentType(UPDATED_PIC_CONTENT_TYPE)
+            .bio(UPDATED_BIO);
         CandidateDTO candidateDTO = candidateMapper.toDto(updatedCandidate);
 
         restCandidateMockMvc
@@ -277,8 +314,10 @@ class CandidateResourceIT {
         assertThat(testCandidate.getFirstName()).isEqualTo(UPDATED_FIRST_NAME);
         assertThat(testCandidate.getLastName()).isEqualTo(UPDATED_LAST_NAME);
         assertThat(testCandidate.getEmail()).isEqualTo(UPDATED_EMAIL);
+        assertThat(testCandidate.getParty()).isEqualTo(UPDATED_PARTY);
         assertThat(testCandidate.getPic()).isEqualTo(UPDATED_PIC);
         assertThat(testCandidate.getPicContentType()).isEqualTo(UPDATED_PIC_CONTENT_TYPE);
+        assertThat(testCandidate.getBio()).isEqualTo(UPDATED_BIO);
     }
 
     @Test
@@ -358,7 +397,7 @@ class CandidateResourceIT {
         Candidate partialUpdatedCandidate = new Candidate();
         partialUpdatedCandidate.setId(candidate.getId());
 
-        partialUpdatedCandidate.pic(UPDATED_PIC).picContentType(UPDATED_PIC_CONTENT_TYPE);
+        partialUpdatedCandidate.party(UPDATED_PARTY).bio(UPDATED_BIO);
 
         restCandidateMockMvc
             .perform(
@@ -375,8 +414,10 @@ class CandidateResourceIT {
         assertThat(testCandidate.getFirstName()).isEqualTo(DEFAULT_FIRST_NAME);
         assertThat(testCandidate.getLastName()).isEqualTo(DEFAULT_LAST_NAME);
         assertThat(testCandidate.getEmail()).isEqualTo(DEFAULT_EMAIL);
-        assertThat(testCandidate.getPic()).isEqualTo(UPDATED_PIC);
-        assertThat(testCandidate.getPicContentType()).isEqualTo(UPDATED_PIC_CONTENT_TYPE);
+        assertThat(testCandidate.getParty()).isEqualTo(UPDATED_PARTY);
+        assertThat(testCandidate.getPic()).isEqualTo(DEFAULT_PIC);
+        assertThat(testCandidate.getPicContentType()).isEqualTo(DEFAULT_PIC_CONTENT_TYPE);
+        assertThat(testCandidate.getBio()).isEqualTo(UPDATED_BIO);
     }
 
     @Test
@@ -395,8 +436,10 @@ class CandidateResourceIT {
             .firstName(UPDATED_FIRST_NAME)
             .lastName(UPDATED_LAST_NAME)
             .email(UPDATED_EMAIL)
+            .party(UPDATED_PARTY)
             .pic(UPDATED_PIC)
-            .picContentType(UPDATED_PIC_CONTENT_TYPE);
+            .picContentType(UPDATED_PIC_CONTENT_TYPE)
+            .bio(UPDATED_BIO);
 
         restCandidateMockMvc
             .perform(
@@ -413,8 +456,10 @@ class CandidateResourceIT {
         assertThat(testCandidate.getFirstName()).isEqualTo(UPDATED_FIRST_NAME);
         assertThat(testCandidate.getLastName()).isEqualTo(UPDATED_LAST_NAME);
         assertThat(testCandidate.getEmail()).isEqualTo(UPDATED_EMAIL);
+        assertThat(testCandidate.getParty()).isEqualTo(UPDATED_PARTY);
         assertThat(testCandidate.getPic()).isEqualTo(UPDATED_PIC);
         assertThat(testCandidate.getPicContentType()).isEqualTo(UPDATED_PIC_CONTENT_TYPE);
+        assertThat(testCandidate.getBio()).isEqualTo(UPDATED_BIO);
     }
 
     @Test

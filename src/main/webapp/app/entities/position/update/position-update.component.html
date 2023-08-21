@@ -1,0 +1,63 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-position-heading" data-cy="PositionCreateUpdateHeading">Create or edit a Position</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_statement">Statement</label>
+          <textarea class="form-control" name="statement" id="field_statement" data-cy="statement" formControlName="statement"></textarea>
+          <div *ngIf="editForm.get('statement')!.invalid && (editForm.get('statement')!.dirty || editForm.get('statement')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('statement')?.errors?.required"> This field is required. </small>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_issue">Issue</label>
+          <select class="form-control" id="field_issue" data-cy="issue" name="issue" formControlName="issue" [compareWith]="compareIssue">
+            <option [ngValue]="null"></option>
+            <option [ngValue]="issueOption" *ngFor="let issueOption of issuesSharedCollection">{{ issueOption.id }}</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_candidate">Candidate</label>
+          <select
+            class="form-control"
+            id="field_candidate"
+            data-cy="candidate"
+            name="candidate"
+            formControlName="candidate"
+            [compareWith]="compareCandidate"
+          >
+            <option [ngValue]="null"></option>
+            <option [ngValue]="candidateOption" *ngFor="let candidateOption of candidatesSharedCollection">{{ candidateOption.id }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

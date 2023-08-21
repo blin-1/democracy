@@ -11,7 +11,6 @@ import { OfficeFormService, OfficeFormGroup } from './office-form.service';
 import { IOffice } from '../office.model';
 import { OfficeService } from '../service/office.service';
 import { State } from 'app/entities/enumerations/state.model';
-import { YesNo } from 'app/entities/enumerations/yes-no.model';
 
 @Component({
   standalone: true,
@@ -23,7 +22,6 @@ export class OfficeUpdateComponent implements OnInit {
   isSaving = false;
   office: IOffice | null = null;
   stateValues = Object.keys(State);
-  yesNoValues = Object.keys(YesNo);
 
   editForm: OfficeFormGroup = this.officeFormService.createOfficeFormGroup();
 

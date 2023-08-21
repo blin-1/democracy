@@ -22,7 +22,6 @@ describe('Issue Form Service', () => {
             id: expect.any(Object),
             name: expect.any(Object),
             description: expect.any(Object),
-            candidate: expect.any(Object),
           })
         );
       });
@@ -35,7 +34,6 @@ describe('Issue Form Service', () => {
             id: expect.any(Object),
             name: expect.any(Object),
             description: expect.any(Object),
-            candidate: expect.any(Object),
           })
         );
       });

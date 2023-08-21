@@ -1,0 +1,33 @@
+{
+  "applications": ["democracy"],
+  "changelogDate": "20230821033757",
+  "dto": "mapstruct",
+  "entityTableName": "statements",
+  "fields": [
+    {
+      "fieldName": "statement",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "text",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "name": "Position",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "issue",
+      "relationshipName": "issue",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "candidate",
+      "otherEntityRelationshipName": "position",
+      "relationshipName": "candidate",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

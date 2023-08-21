@@ -38,9 +38,9 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="state">
+          <th scope="col" jhiSortBy="name">
             <div class="d-flex">
-              <span>State</span>
+              <span>Name</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
@@ -50,9 +50,15 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
-          <th scope="col" jhiSortBy="federal">
+          <th scope="col" jhiSortBy="state">
             <div class="d-flex">
-              <span>Federal</span>
+              <span>State</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="electionDate">
+            <div class="d-flex">
+              <span>Election Date</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
@@ -64,9 +70,10 @@
           <td>
             <a [routerLink]="['/office', office.id, 'view']">{{ office.id }}</a>
           </td>
-          <td>{{ office.state }}</td>
+          <td>{{ office.name }}</td>
           <td>{{ office.municipality }}</td>
-          <td>{{ office.federal }}</td>
+          <td>{{ office.state }}</td>
+          <td>{{ office.electionDate | formatMediumDatetime }}</td>
           <td class="text-end">
             <div class="btn-group">
               <button type="submit" [routerLink]="['/office', office.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">

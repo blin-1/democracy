@@ -50,10 +50,10 @@ describe('Candidate Management Update Component', () => {
   describe('ngOnInit', () => {
     it('Should call Office query and add missing value', () => {
       const candidate: ICandidate = { id: 456 };
-      const office: IOffice = { id: 22904 };
+      const office: IOffice = { id: 7926 };
       candidate.office = office;
 
-      const officeCollection: IOffice[] = [{ id: 7926 }];
+      const officeCollection: IOffice[] = [{ id: 32041 }];
       jest.spyOn(officeService, 'query').mockReturnValue(of(new HttpResponse({ body: officeCollection })));
       const additionalOffices = [office];
       const expectedCollection: IOffice[] = [...additionalOffices, ...officeCollection];
@@ -72,7 +72,7 @@ describe('Candidate Management Update Component', () => {
 
     it('Should update editForm', () => {
       const candidate: ICandidate = { id: 456 };
-      const office: IOffice = { id: 32041 };
+      const office: IOffice = { id: 11074 };
       candidate.office = office;
 
       activatedRoute.data = of({ candidate });

@@ -21,8 +21,10 @@ type CandidateFormGroupContent = {
   firstName: FormControl<ICandidate['firstName']>;
   lastName: FormControl<ICandidate['lastName']>;
   email: FormControl<ICandidate['email']>;
+  party: FormControl<ICandidate['party']>;
   pic: FormControl<ICandidate['pic']>;
   picContentType: FormControl<ICandidate['picContentType']>;
+  bio: FormControl<ICandidate['bio']>;
   office: FormControl<ICandidate['office']>;
 };
 
@@ -52,10 +54,16 @@ export class CandidateFormService {
       email: new FormControl(candidateRawValue.email, {
         validators: [Validators.required],
       }),
+      party: new FormControl(candidateRawValue.party, {
+        validators: [Validators.required],
+      }),
       pic: new FormControl(candidateRawValue.pic, {
         validators: [Validators.required],
       }),
       picContentType: new FormControl(candidateRawValue.picContentType),
+      bio: new FormControl(candidateRawValue.bio, {
+        validators: [Validators.required],
+      }),
       office: new FormControl(candidateRawValue.office),
     });
   }

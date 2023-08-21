@@ -35,21 +35,6 @@
             <small class="form-text text-danger" *ngIf="editForm.get('description')?.errors?.required"> This field is required. </small>
           </div>
         </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="field_candidate">Candidate</label>
-          <select
-            class="form-control"
-            id="field_candidate"
-            data-cy="candidate"
-            name="candidate"
-            formControlName="candidate"
-            [compareWith]="compareCandidate"
-          >
-            <option [ngValue]="null"></option>
-            <option [ngValue]="candidateOption" *ngFor="let candidateOption of candidatesSharedCollection">{{ candidateOption.id }}</option>
-          </select>
-        </div>
       </div>
 
       <div>

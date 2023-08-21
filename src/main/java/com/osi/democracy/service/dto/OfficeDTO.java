@@ -1,9 +1,9 @@
 package com.osi.democracy.service.dto;
 
 import com.osi.democracy.domain.enumeration.State;
-import com.osi.democracy.domain.enumeration.YesNo;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Objects;
 
 /**
@@ -14,12 +14,15 @@ public class OfficeDTO implements Serializable {
 
     private Long id;
 
-    private State state;
+    @Size(max = 128)
+    private String name;
 
     @Size(max = 128)
     private String municipality;
 
-    private YesNo federal;
+    private State state;
+
+    private Instant electionDate;
 
     public Long getId() {
         return id;
@@ -29,12 +32,12 @@ public class OfficeDTO implements Serializable {
         this.id = id;
     }
 
-    public State getState() {
-        return state;
+    public String getName() {
+        return name;
     }
 
-    public void setState(State state) {
-        this.state = state;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getMunicipality() {
@@ -45,12 +48,20 @@ public class OfficeDTO implements Serializable {
         this.municipality = municipality;
     }
 
-    public YesNo getFederal() {
-        return federal;
+    public State getState() {
+        return state;
     }
 
-    public void setFederal(YesNo federal) {
-        this.federal = federal;
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public Instant getElectionDate() {
+        return electionDate;
+    }
+
+    public void setElectionDate(Instant electionDate) {
+        this.electionDate = electionDate;
     }
 
     @Override
@@ -79,9 +90,10 @@ public class OfficeDTO implements Serializable {
     public String toString() {
         return "OfficeDTO{" +
             "id=" + getId() +
-            ", state='" + getState() + "'" +
+            ", name='" + getName() + "'" +
             ", municipality='" + getMunicipality() + "'" +
-            ", federal='" + getFederal() + "'" +
+            ", state='" + getState() + "'" +
+            ", electionDate='" + getElectionDate() + "'" +
             "}";
     }
 }

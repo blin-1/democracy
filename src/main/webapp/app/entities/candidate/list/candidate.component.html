@@ -56,9 +56,21 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
+          <th scope="col" jhiSortBy="party">
+            <div class="d-flex">
+              <span>Party</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
           <th scope="col" jhiSortBy="pic">
             <div class="d-flex">
               <span>Pic</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="bio">
+            <div class="d-flex">
+              <span>Bio</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
@@ -79,12 +91,14 @@
           <td>{{ candidate.firstName }}</td>
           <td>{{ candidate.lastName }}</td>
           <td>{{ candidate.email }}</td>
+          <td>{{ candidate.party }}</td>
           <td>
             <a *ngIf="candidate.pic" (click)="openFile(candidate.pic, candidate.picContentType)">
               <img [src]="'data:' + candidate.picContentType + ';base64,' + candidate.pic" style="max-height: 30px" alt="candidate image" />
             </a>
             <span *ngIf="candidate.pic">{{ candidate.picContentType }}, {{ byteSize(candidate.pic) }}</span>
           </td>
+          <td>{{ candidate.bio }}</td>
           <td>
             <div *ngIf="candidate.office">
               <a [routerLink]="['/office', candidate.office.id, 'view']">{{ candidate.office.id }}</a>

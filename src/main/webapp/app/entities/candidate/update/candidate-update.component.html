@@ -42,6 +42,17 @@
         </div>
 
         <div class="mb-3">
+          <label class="form-label" for="field_party">Party</label>
+          <select class="form-control" name="party" formControlName="party" id="field_party" data-cy="party">
+            <option [ngValue]="null"></option>
+            <option *ngFor="let party of partyValues" [value]="party">{{ party }}</option>
+          </select>
+          <div *ngIf="editForm.get('party')!.invalid && (editForm.get('party')!.dirty || editForm.get('party')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('party')?.errors?.required"> This field is required. </small>
+          </div>
+        </div>
+
+        <div class="mb-3">
           <label class="form-label" for="field_pic">Pic</label>
           <div>
             <img
@@ -66,6 +77,14 @@
           <input type="hidden" class="form-control" name="picContentType" id="field_picContentType" formControlName="picContentType" />
           <div *ngIf="editForm.get('pic')!.invalid && (editForm.get('pic')!.dirty || editForm.get('pic')!.touched)">
             <small class="form-text text-danger" *ngIf="editForm.get('pic')?.errors?.required"> This field is required. </small>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="field_bio">Bio</label>
+          <textarea class="form-control" name="bio" id="field_bio" data-cy="bio" formControlName="bio"></textarea>
+          <div *ngIf="editForm.get('bio')!.invalid && (editForm.get('bio')!.dirty || editForm.get('bio')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('bio')?.errors?.required"> This field is required. </small>
           </div>
         </div>
 

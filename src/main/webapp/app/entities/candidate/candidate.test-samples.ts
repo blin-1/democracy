@@ -1,38 +1,48 @@
+import { Party } from 'app/entities/enumerations/party.model';
+
 import { ICandidate, NewCandidate } from './candidate.model';
 
 export const sampleWithRequiredData: ICandidate = {
-  id: 24569,
-  firstName: 'Jack',
-  lastName: 'Dooley',
-  email: 'Dale50@hotmail.com',
+  id: 8756,
+  firstName: 'Cole',
+  lastName: 'Hamill',
+  email: 'Teagan62@yahoo.com',
+  party: 'I',
   pic: '../fake-data/blob/hipster.png',
   picContentType: 'unknown',
+  bio: '../fake-data/blob/hipster.txt',
 };
 
 export const sampleWithPartialData: ICandidate = {
-  id: 8509,
-  firstName: 'Lilyan',
-  lastName: 'Jacobs',
-  email: 'Maribel11@gmail.com',
+  id: 13108,
+  firstName: 'Maribel',
+  lastName: 'Ankunding',
+  email: 'Else.Bruen36@hotmail.com',
+  party: 'U',
   pic: '../fake-data/blob/hipster.png',
   picContentType: 'unknown',
+  bio: '../fake-data/blob/hipster.txt',
 };
 
 export const sampleWithFullData: ICandidate = {
-  id: 30527,
-  firstName: 'Reanna',
-  lastName: 'Hickle',
-  email: 'Zion_Stark@yahoo.com',
+  id: 17818,
+  firstName: 'Rowan',
+  lastName: 'Larkin',
+  email: 'Zackary6@hotmail.com',
+  party: 'U',
   pic: '../fake-data/blob/hipster.png',
   picContentType: 'unknown',
+  bio: '../fake-data/blob/hipster.txt',
 };
 
 export const sampleWithNewData: NewCandidate = {
-  firstName: 'Cassidy',
-  lastName: 'Schuppe',
-  email: 'Colin9@yahoo.com',
+  firstName: 'Kitty',
+  lastName: 'Boyle',
+  email: 'Cristal.Schmeler@yahoo.com',
+  party: 'R',
   pic: '../fake-data/blob/hipster.png',
   picContentType: 'unknown',
+  bio: '../fake-data/blob/hipster.txt',
   id: null,
 };
 

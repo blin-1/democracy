@@ -1,11 +1,11 @@
-id;state;municipality;federal
-1;NY;24/365 Forks Tuna;Y
-2;NY;smug foreground;N
-3;AL;Ford;Y
-4;NJ;Ergonomic;N
-5;NJ;Generic kelvin;Y
-6;AL;Tuna East;N
-7;NJ;Northeast;N
-8;AL;fuchsia infrastructures;Y
-9;NJ;Mountain;N
-10;NY;East Sedan Einsteinium;N
+id;name;municipality;state;election_date
+1;Cab Forks Tuna;Molybdenum smug;NJ;2023-08-20T11:10:25
+2;Courts application Bahamian;male;NJ;2023-08-20T14:29:18
+3;ubiquitous schemas;firmware;NJ;2023-08-20T16:10:59
+4;East off;Northeast;NY;2023-08-20T16:23:28
+5;fuchsia infrastructures;copying;NY;2023-08-20T06:25:46
+6;solidly;East Sedan Einsteinium;NY;2023-08-20T18:30:40
+7;echo West;lime Tools Developer;NJ;2023-08-19T21:17:38
+8;Franc Hatchback delay;synthesize South red;NY;2023-08-20T18:17:16
+9;Integrated fat;Iodine Centralized female;NJ;2023-08-20T05:09:57
+10;Intelligent;North;NY;2023-08-20T15:55:53

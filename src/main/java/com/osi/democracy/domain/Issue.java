@@ -1,6 +1,5 @@
 package com.osi.democracy.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -31,10 +30,6 @@ public class Issue implements Serializable {
     @Lob
     @Column(name = "description", nullable = false)
     private String description;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "issues", "office" }, allowSetters = true)
-    private Candidate candidate;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -75,19 +70,6 @@ public class Issue implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Candidate getCandidate() {
-        return this.candidate;
-    }
-
-    public void setCandidate(Candidate candidate) {
-        this.candidate = candidate;
-    }
-
-    public Issue candidate(Candidate candidate) {
-        this.setCandidate(candidate);
-        return this;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

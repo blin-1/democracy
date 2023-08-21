@@ -4,10 +4,11 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { IOffice } from '../office.model';
 import { sampleWithRequiredData, sampleWithNewData, sampleWithPartialData, sampleWithFullData } from '../office.test-samples';
 
-import { OfficeService } from './office.service';
+import { OfficeService, RestOffice } from './office.service';
 
-const requireRestSample: IOffice = {
+const requireRestSample: RestOffice = {
   ...sampleWithRequiredData,
+  electionDate: sampleWithRequiredData.electionDate?.toJSON(),
 };
 
 describe('Office Service', () => {

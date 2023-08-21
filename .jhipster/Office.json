@@ -5,9 +5,10 @@
   "entityTableName": "offices",
   "fields": [
     {
-      "fieldName": "state",
-      "fieldType": "State",
-      "fieldValues": "AL (Alabama),NJ (New Jersey),NY (New York)"
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "128"
     },
     {
       "fieldName": "municipality",
@@ -16,9 +17,13 @@
       "fieldValidateRulesMaxlength": "128"
     },
     {
-      "fieldName": "federal",
-      "fieldType": "YesNo",
-      "fieldValues": "Y (Yes),N (No)"
+      "fieldName": "state",
+      "fieldType": "State",
+      "fieldValues": "AL (Alabama),NJ (New Jersey),NY (New York)"
+    },
+    {
+      "fieldName": "electionDate",
+      "fieldType": "Instant"
     }
   ],
   "name": "Office",

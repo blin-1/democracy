@@ -14,17 +14,21 @@
         <dd>
           <span>{{ office.id }}</span>
         </dd>
-        <dt><span>State</span></dt>
+        <dt><span>Name</span></dt>
         <dd>
-          <span>{{ office.state }}</span>
+          <span>{{ office.name }}</span>
         </dd>
         <dt><span>Municipality</span></dt>
         <dd>
           <span>{{ office.municipality }}</span>
         </dd>
-        <dt><span>Federal</span></dt>
+        <dt><span>State</span></dt>
         <dd>
-          <span>{{ office.federal }}</span>
+          <span>{{ office.state }}</span>
+        </dd>
+        <dt><span>Election Date</span></dt>
+        <dd>
+          <span>{{ office.electionDate | formatMediumDatetime }}</span>
         </dd>
       </dl>
 

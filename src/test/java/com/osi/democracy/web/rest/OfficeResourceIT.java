@@ -8,11 +8,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.osi.democracy.IntegrationTest;
 import com.osi.democracy.domain.Office;
 import com.osi.democracy.domain.enumeration.State;
-import com.osi.democracy.domain.enumeration.YesNo;
 import com.osi.democracy.repository.OfficeRepository;
 import com.osi.democracy.service.dto.OfficeDTO;
 import com.osi.democracy.service.mapper.OfficeMapper;
 import jakarta.persistence.EntityManager;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -33,14 +34,17 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class OfficeResourceIT {
 
-    private static final State DEFAULT_STATE = State.AL;
-    private static final State UPDATED_STATE = State.NJ;
+    private static final String DEFAULT_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_NAME = "BBBBBBBBBB";
 
     private static final String DEFAULT_MUNICIPALITY = "AAAAAAAAAA";
     private static final String UPDATED_MUNICIPALITY = "BBBBBBBBBB";
 
-    private static final YesNo DEFAULT_FEDERAL = YesNo.Y;
-    private static final YesNo UPDATED_FEDERAL = YesNo.N;
+    private static final State DEFAULT_STATE = State.AL;
+    private static final State UPDATED_STATE = State.NJ;
+
+    private static final Instant DEFAULT_ELECTION_DATE = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_ELECTION_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final String ENTITY_API_URL = "/api/offices";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -69,7 +73,11 @@ class OfficeResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Office createEntity(EntityManager em) {
-        Office office = new Office().state(DEFAULT_STATE).municipality(DEFAULT_MUNICIPALITY).federal(DEFAULT_FEDERAL);
+        Office office = new Office()
+            .name(DEFAULT_NAME)
+            .municipality(DEFAULT_MUNICIPALITY)
+            .state(DEFAULT_STATE)
+            .electionDate(DEFAULT_ELECTION_DATE);
         return office;
     }
 
@@ -80,7 +88,11 @@ class OfficeResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Office createUpdatedEntity(EntityManager em) {
-        Office office = new Office().state(UPDATED_STATE).municipality(UPDATED_MUNICIPALITY).federal(UPDATED_FEDERAL);
+        Office office = new Office()
+            .name(UPDATED_NAME)
+            .municipality(UPDATED_MUNICIPALITY)
+            .state(UPDATED_STATE)
+            .electionDate(UPDATED_ELECTION_DATE);
         return office;
     }
 
@@ -103,9 +115,10 @@ class OfficeResourceIT {
         List<Office> officeList = officeRepository.findAll();
         assertThat(officeList).hasSize(databaseSizeBeforeCreate + 1);
         Office testOffice = officeList.get(officeList.size() - 1);
-        assertThat(testOffice.getState()).isEqualTo(DEFAULT_STATE);
+        assertThat(testOffice.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testOffice.getMunicipality()).isEqualTo(DEFAULT_MUNICIPALITY);
-        assertThat(testOffice.getFederal()).isEqualTo(DEFAULT_FEDERAL);
+        assertThat(testOffice.getState()).isEqualTo(DEFAULT_STATE);
+        assertThat(testOffice.getElectionDate()).isEqualTo(DEFAULT_ELECTION_DATE);
     }
 
     @Test
@@ -139,9 +152,10 @@ class OfficeResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(office.getId().intValue())))
-            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].municipality").value(hasItem(DEFAULT_MUNICIPALITY)))
-            .andExpect(jsonPath("$.[*].federal").value(hasItem(DEFAULT_FEDERAL.toString())));
+            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())))
+            .andExpect(jsonPath("$.[*].electionDate").value(hasItem(DEFAULT_ELECTION_DATE.toString())));
     }
 
     @Test
@@ -156,9 +170,10 @@ class OfficeResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(office.getId().intValue()))
-            .andExpect(jsonPath("$.state").value(DEFAULT_STATE.toString()))
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.municipality").value(DEFAULT_MUNICIPALITY))
-            .andExpect(jsonPath("$.federal").value(DEFAULT_FEDERAL.toString()));
+            .andExpect(jsonPath("$.state").value(DEFAULT_STATE.toString()))
+            .andExpect(jsonPath("$.electionDate").value(DEFAULT_ELECTION_DATE.toString()));
     }
 
     @Test
@@ -180,7 +195,7 @@ class OfficeResourceIT {
         Office updatedOffice = officeRepository.findById(office.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedOffice are not directly saved in db
         em.detach(updatedOffice);
-        updatedOffice.state(UPDATED_STATE).municipality(UPDATED_MUNICIPALITY).federal(UPDATED_FEDERAL);
+        updatedOffice.name(UPDATED_NAME).municipality(UPDATED_MUNICIPALITY).state(UPDATED_STATE).electionDate(UPDATED_ELECTION_DATE);
         OfficeDTO officeDTO = officeMapper.toDto(updatedOffice);
 
         restOfficeMockMvc
@@ -195,9 +210,10 @@ class OfficeResourceIT {
         List<Office> officeList = officeRepository.findAll();
         assertThat(officeList).hasSize(databaseSizeBeforeUpdate);
         Office testOffice = officeList.get(officeList.size() - 1);
-        assertThat(testOffice.getState()).isEqualTo(UPDATED_STATE);
+        assertThat(testOffice.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testOffice.getMunicipality()).isEqualTo(UPDATED_MUNICIPALITY);
-        assertThat(testOffice.getFederal()).isEqualTo(UPDATED_FEDERAL);
+        assertThat(testOffice.getState()).isEqualTo(UPDATED_STATE);
+        assertThat(testOffice.getElectionDate()).isEqualTo(UPDATED_ELECTION_DATE);
     }
 
     @Test
@@ -277,7 +293,7 @@ class OfficeResourceIT {
         Office partialUpdatedOffice = new Office();
         partialUpdatedOffice.setId(office.getId());
 
-        partialUpdatedOffice.state(UPDATED_STATE).federal(UPDATED_FEDERAL);
+        partialUpdatedOffice.name(UPDATED_NAME).state(UPDATED_STATE);
 
         restOfficeMockMvc
             .perform(
@@ -291,9 +307,10 @@ class OfficeResourceIT {
         List<Office> officeList = officeRepository.findAll();
         assertThat(officeList).hasSize(databaseSizeBeforeUpdate);
         Office testOffice = officeList.get(officeList.size() - 1);
-        assertThat(testOffice.getState()).isEqualTo(UPDATED_STATE);
+        assertThat(testOffice.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testOffice.getMunicipality()).isEqualTo(DEFAULT_MUNICIPALITY);
-        assertThat(testOffice.getFederal()).isEqualTo(UPDATED_FEDERAL);
+        assertThat(testOffice.getState()).isEqualTo(UPDATED_STATE);
+        assertThat(testOffice.getElectionDate()).isEqualTo(DEFAULT_ELECTION_DATE);
     }
 
     @Test
@@ -308,7 +325,7 @@ class OfficeResourceIT {
         Office partialUpdatedOffice = new Office();
         partialUpdatedOffice.setId(office.getId());
 
-        partialUpdatedOffice.state(UPDATED_STATE).municipality(UPDATED_MUNICIPALITY).federal(UPDATED_FEDERAL);
+        partialUpdatedOffice.name(UPDATED_NAME).municipality(UPDATED_MUNICIPALITY).state(UPDATED_STATE).electionDate(UPDATED_ELECTION_DATE);
 
         restOfficeMockMvc
             .perform(
@@ -322,9 +339,10 @@ class OfficeResourceIT {
         List<Office> officeList = officeRepository.findAll();
         assertThat(officeList).hasSize(databaseSizeBeforeUpdate);
         Office testOffice = officeList.get(officeList.size() - 1);
-        assertThat(testOffice.getState()).isEqualTo(UPDATED_STATE);
+        assertThat(testOffice.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testOffice.getMunicipality()).isEqualTo(UPDATED_MUNICIPALITY);
-        assertThat(testOffice.getFederal()).isEqualTo(UPDATED_FEDERAL);
+        assertThat(testOffice.getState()).isEqualTo(UPDATED_STATE);
+        assertThat(testOffice.getElectionDate()).isEqualTo(UPDATED_ELECTION_DATE);
     }
 
     @Test

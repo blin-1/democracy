@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { finalize, map } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -13,8 +13,6 @@ import { IssueService } from '../service/issue.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
 import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
-import { ICandidate } from 'app/entities/candidate/candidate.model';
-import { CandidateService } from 'app/entities/candidate/service/candidate.service';
 
 @Component({
   standalone: true,
@@ -26,8 +24,6 @@ export class IssueUpdateComponent implements OnInit {
   isSaving = false;
   issue: IIssue | null = null;
 
-  candidatesSharedCollection: ICandidate[] = [];
-
   editForm: IssueFormGroup = this.issueFormService.createIssueFormGroup();
 
   constructor(
@@ -35,11 +31,8 @@ export class IssueUpdateComponent implements OnInit {
     protected eventManager: EventManager,
     protected issueService: IssueService,
     protected issueFormService: IssueFormService,
-    protected candidateService: CandidateService,
     protected activatedRoute: ActivatedRoute
   ) {}
-
-  compareCandidate = (o1: ICandidate | null, o2: ICandidate | null): boolean => this.candidateService.compareCandidate(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ issue }) => {
@@ -47,8 +40,6 @@ export class IssueUpdateComponent implements OnInit {
       if (issue) {
         this.updateForm(issue);
       }
-
-      this.loadRelationshipsOptions();
     });
   }
 
@@ -103,22 +94,5 @@ export class IssueUpdateComponent implements OnInit {
   protected updateForm(issue: IIssue): void {
     this.issue = issue;
     this.issueFormService.resetForm(this.editForm, issue);
-
-    this.candidatesSharedCollection = this.candidateService.addCandidateToCollectionIfMissing<ICandidate>(
-      this.candidatesSharedCollection,
-      issue.candidate
-    );
-  }
-
-  protected loadRelationshipsOptions(): void {
-    this.candidateService
-      .query()
-      .pipe(map((res: HttpResponse<ICandidate[]>) => res.body ?? []))
-      .pipe(
-        map((candidates: ICandidate[]) =>
-          this.candidateService.addCandidateToCollectionIfMissing<ICandidate>(candidates, this.issue?.candidate)
-        )
-      )
-      .subscribe((candidates: ICandidate[]) => (this.candidatesSharedCollection = candidates));
   }
 }

@@ -2,10 +2,10 @@ package com.osi.democracy.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.osi.democracy.domain.enumeration.State;
-import com.osi.democracy.domain.enumeration.YesNo;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 import org.hibernate.annotations.Cache;
@@ -27,21 +27,24 @@ public class Office implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "state")
-    private State state;
+    @Size(max = 128)
+    @Column(name = "name", length = 128)
+    private String name;
 
     @Size(max = 128)
     @Column(name = "municipality", length = 128)
     private String municipality;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "federal")
-    private YesNo federal;
+    @Column(name = "state")
+    private State state;
+
+    @Column(name = "election_date")
+    private Instant electionDate;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "office")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "issues", "office" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "positions", "office" }, allowSetters = true)
     private Set<Candidate> candidates = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -59,17 +62,17 @@ public class Office implements Serializable {
         this.id = id;
     }
 
-    public State getState() {
-        return this.state;
+    public String getName() {
+        return this.name;
     }
 
-    public Office state(State state) {
-        this.setState(state);
+    public Office name(String name) {
+        this.setName(name);
         return this;
     }
 
-    public void setState(State state) {
-        this.state = state;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getMunicipality() {
@@ -85,17 +88,30 @@ public class Office implements Serializable {
         this.municipality = municipality;
     }
 
-    public YesNo getFederal() {
-        return this.federal;
+    public State getState() {
+        return this.state;
     }
 
-    public Office federal(YesNo federal) {
-        this.setFederal(federal);
+    public Office state(State state) {
+        this.setState(state);
         return this;
     }
 
-    public void setFederal(YesNo federal) {
-        this.federal = federal;
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public Instant getElectionDate() {
+        return this.electionDate;
+    }
+
+    public Office electionDate(Instant electionDate) {
+        this.setElectionDate(electionDate);
+        return this;
+    }
+
+    public void setElectionDate(Instant electionDate) {
+        this.electionDate = electionDate;
     }
 
     public Set<Candidate> getCandidates() {
@@ -153,9 +169,10 @@ public class Office implements Serializable {
     public String toString() {
         return "Office{" +
             "id=" + getId() +
-            ", state='" + getState() + "'" +
+            ", name='" + getName() + "'" +
             ", municipality='" + getMunicipality() + "'" +
-            ", federal='" + getFederal() + "'" +
+            ", state='" + getState() + "'" +
+            ", electionDate='" + getElectionDate() + "'" +
             "}";
     }
 }

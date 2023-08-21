@@ -1,6 +1,7 @@
 package com.osi.democracy.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.osi.democracy.domain.enumeration.Party;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -39,6 +40,11 @@ public class Candidate implements Serializable {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "party", nullable = false)
+    private Party party;
+
     @Lob
     @Column(name = "pic", nullable = false)
     private byte[] pic;
@@ -47,10 +53,14 @@ public class Candidate implements Serializable {
     @Column(name = "pic_content_type", nullable = false)
     private String picContentType;
 
+    @Lob
+    @Column(name = "bio", nullable = false)
+    private String bio;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "candidate")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "candidate" }, allowSetters = true)
-    private Set<Issue> issues = new HashSet<>();
+    @JsonIgnoreProperties(value = { "issue", "candidate" }, allowSetters = true)
+    private Set<Position> positions = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "candidates" }, allowSetters = true)
@@ -110,6 +120,19 @@ public class Candidate implements Serializable {
         this.email = email;
     }
 
+    public Party getParty() {
+        return this.party;
+    }
+
+    public Candidate party(Party party) {
+        this.setParty(party);
+        return this;
+    }
+
+    public void setParty(Party party) {
+        this.party = party;
+    }
+
     public byte[] getPic() {
         return this.pic;
     }
@@ -136,34 +159,47 @@ public class Candidate implements Serializable {
         this.picContentType = picContentType;
     }
 
-    public Set<Issue> getIssues() {
-        return this.issues;
+    public String getBio() {
+        return this.bio;
     }
 
-    public void setIssues(Set<Issue> issues) {
-        if (this.issues != null) {
-            this.issues.forEach(i -> i.setCandidate(null));
-        }
-        if (issues != null) {
-            issues.forEach(i -> i.setCandidate(this));
-        }
-        this.issues = issues;
-    }
-
-    public Candidate issues(Set<Issue> issues) {
-        this.setIssues(issues);
+    public Candidate bio(String bio) {
+        this.setBio(bio);
         return this;
     }
 
-    public Candidate addIssue(Issue issue) {
-        this.issues.add(issue);
-        issue.setCandidate(this);
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public Set<Position> getPositions() {
+        return this.positions;
+    }
+
+    public void setPositions(Set<Position> positions) {
+        if (this.positions != null) {
+            this.positions.forEach(i -> i.setCandidate(null));
+        }
+        if (positions != null) {
+            positions.forEach(i -> i.setCandidate(this));
+        }
+        this.positions = positions;
+    }
+
+    public Candidate positions(Set<Position> positions) {
+        this.setPositions(positions);
         return this;
     }
 
-    public Candidate removeIssue(Issue issue) {
-        this.issues.remove(issue);
-        issue.setCandidate(null);
+    public Candidate addPosition(Position position) {
+        this.positions.add(position);
+        position.setCandidate(this);
+        return this;
+    }
+
+    public Candidate removePosition(Position position) {
+        this.positions.remove(position);
+        position.setCandidate(null);
         return this;
     }
 
@@ -207,8 +243,10 @@ public class Candidate implements Serializable {
             ", firstName='" + getFirstName() + "'" +
             ", lastName='" + getLastName() + "'" +
             ", email='" + getEmail() + "'" +
+            ", party='" + getParty() + "'" +
             ", pic='" + getPic() + "'" +
             ", picContentType='" + getPicContentType() + "'" +
+            ", bio='" + getBio() + "'" +
             "}";
     }
 }
